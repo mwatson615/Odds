@@ -1,0 +1,14 @@
+*.iml
+.gradle
+/local.properties
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+app/libs/
+app/src/main/res/drawable/
+gradle.properties
+keystore.properties
+src/main/res/drawable/
+src/main/res/values/values.xml

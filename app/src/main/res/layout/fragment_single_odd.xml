@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/primaryColor"
+    android:id="@+id/fragmentSingleOdd"
+    android:clickable="true"
+    android:layout_height="match_parent"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/imageURLImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_margin="2dp"
+        app:layout_constraintBottom_toTopOf="@id/dataLinearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/image_for_this_odd"/>
+
+    <LinearLayout
+        android:id="@+id/dataLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/imageURLItem"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/imageURLItem"
+        app:layout_constraintEnd_toEndOf="@id/imageURLItem"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/descriptionSingleOdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:fontFamily="@font/averia_sans_libre_light"
+            tools:text="@string/bats_data_error"/>
+
+        <TextView
+            android:id="@+id/percentageSingleOdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:fontFamily="@font/averia_sans_libre_light"
+            android:textSize="36sp"
+            app:layout_constraintEnd_toEndOf="@id/descriptionItem"
+            app:layout_constraintStart_toStartOf="@id/descriptionItem"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionItem"
+            android:text="@string/percentage_text"
+            tools:text="95%"/>
+
+        <TextView
+            android:id="@+id/singleOddDueDateTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:textSize="18sp"
+            android:fontFamily="@font/averia_sans_libre_light"
+            android:text="@string/due_date_answer"/>
+
+        <LinearLayout
+            android:id="@+id/labelsLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/oddsForLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:textColor="@color/secondaryColor"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/averia_sans_libre_light"
+                android:textSize="18sp"
+                android:text="@string/odds_for"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/oddsAgainstLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/secondaryColor"
+                android:fontFamily="@font/averia_sans_libre_light"
+                android:textSize="18sp"
+                android:text="@string/odds_against"
+                android:textAlignment="center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/numbersLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/oddsForSingleOdd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight=".5"
+                android:textAlignment="center"
+                android:textColor="@color/primaryTextColor"
+                android:fontFamily="@font/averia_sans_libre_light"
+                android:textSize="20sp"
+                tools:text="12345"/>
+
+            <TextView
+                android:id="@+id/oddsAgainstSingleOdd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight=".5"
+                android:textAlignment="center"
+                android:textColor="@color/primaryTextColor"
+                android:fontFamily="@font/averia_sans_libre_light"
+                android:textSize="20sp"
+                tools:text="12345"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/voteLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:weightSum="1"
+            style="?android:attr/buttonBarStyle">
+
+            <android.support.v4.widget.Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".1"/>
+
+            <Button
+                android:id="@+id/voteYesButton"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_selector"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:textColor="@color/primaryColor"
+                android:padding="5dp"
+                android:gravity="center"
+                android:layout_weight=".3"
+                android:fontFamily="@font/averia_sans_libre_light"
+                android:text="@string/totally"/>
+
+            <android.support.v4.widget.Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"/>
+
+            <Button
+                android:id="@+id/voteNoButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="?android:attr/buttonBarButtonStyle"
+                android:background="@drawable/button_selector"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:minHeight="0dp"
+                android:textColor="@color/primaryColor"
+                android:minWidth="0dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:layout_weight=".3"
+                android:fontFamily="@font/averia_sans_libre_light"
+                android:text="@string/no_way"/>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/addToFavoritesButton"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_favorite_border_black_24dp"
+            android:background="@color/primaryColor"
+            android:layout_gravity="center"
+            android:contentDescription="@string/add_to_favorites_button"/>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
+

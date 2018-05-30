@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryColor"
+    android:layout_margin="3dp"
+    android:id="@+id/fragmentCreateOdds"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/instructions_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="25dp"
+        android:textColor="@color/primaryTextColor"
+        android:fontFamily="@font/averia_sans_libre_light"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:text="@string/create_odds_instructions"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
+
+        <ProgressBar
+            android:id="@+id/imageSearchProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/imageViewPager"
+            android:background="@drawable/rounded_corners"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
+            android:layout_gravity="center">
+
+        </android.support.v4.view.ViewPager>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/descriptionLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="25dp"
+        android:paddingStart="25dp"
+        android:paddingEnd="25dp">
+
+        <EditText
+            android:id="@+id/descriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:focusable="true"
+            style="@style/EditTextDark"
+            android:gravity="center"
+            android:hint="@string/odds_that"
+            android:inputType="textMultiLine"
+            android:maxLines="2"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/imageSearchTermsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/imageSearchTermsEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="52dp"
+            android:focusable="true"
+            style="@style/EditTextDark"
+            android:hint="@string/add_image_search_terms"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toStartOf="@+id/searchButton"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ic_search_black_24dp"
+            android:fontFamily="@font/averia_sans_libre_light"
+            app:layout_constraintStart_toEndOf="@id/imageSearchTermsEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <Button
+            android:id="@+id/looksGoodButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:elevation="4dp"
+            android:layout_marginStart="8dp"
+            style="@style/Button"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:textColor="@color/primaryColor"
+            android:text="@string/looks_good"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageSearchTermsEditText"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/forOrAgainstLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/questionYesOrNoLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/secondaryColor"
+            android:fontFamily="@font/averia_sans_libre_light"
+            android:textSize="18sp"
+            android:text="@string/do_you_think_this_will_happen"/>
+
+        <LinearLayout
+            android:id="@+id/checkboxLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"/>
+
+            <CheckBox
+                android:id="@+id/yesCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                style="@style/DarkCheckBox"
+                android:text="@string/yes"/>
+
+            <CheckBox
+                android:id="@+id/noCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                style="@style/DarkCheckBox"
+                android:text="@string/no"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dateInstructionLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/averia_sans_libre_light"
+            android:textColor="@color/secondaryColor"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:text="@string/due_date_question"/>
+
+        <LinearLayout
+            android:id="@+id/dateButtonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"/>
+
+            <Button
+                android:id="@+id/pickADateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Button"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:textColor="@color/primaryColor"
+                android:layout_weight=".2"
+                android:text="@string/yep"/>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"/>
+
+            <Button
+                android:id="@+id/noDateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Button"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:textColor="@color/primaryColor"
+                android:layout_weight=".2"
+                android:text="@string/nope"/>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/dueDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/averia_sans_libre_light"
+        android:textColor="@color/primaryTextColor"
+        android:backgroundTint="@color/secondaryLightColor"
+        android:textSize="18sp"
+        android:text="@string/due_date_answer"
+        android:layout_gravity="center"/>
+
+    <LinearLayout
+        android:id="@+id/createOddsButtonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".2"/>
+
+        <Button
+            android:id="@+id/makeChangesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Button"
+            android:textColor="@color/primaryColor"
+            android:layout_weight=".2"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="@string/cancel"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".2"/>
+
+        <Button
+            android:id="@+id/createOddsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Button"
+            android:textColor="@color/primaryColor"
+            android:layout_weight=".2"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="@string/create"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".2"/>
+
+    </LinearLayout>
+
+</LinearLayout>

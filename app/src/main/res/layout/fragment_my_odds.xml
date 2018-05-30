@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragmentMyOdds"
+    tools:context="com.rosebay.odds.ui.mainOdds.MainActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/myOddsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteX="8dp">
+    </android.support.v7.widget.RecyclerView>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/myOddsProgressBar"
+        app:layout_constraintTop_toTopOf="@id/noMyOddsTextView"
+        app:layout_constraintBottom_toBottomOf="@id/noMyOddsTextView"
+        app:layout_constraintStart_toStartOf="@id/noMyOddsTextView"
+        app:layout_constraintEnd_toEndOf="@id/noMyOddsTextView"/>
+
+    <TextView
+        android:id="@+id/noMyOddsTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/averia_sans_libre_light"
+        android:text="@string/my_odds_no_yet_msg"
+        android:textSize="18sp"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"/>
+
+</android.support.constraint.ConstraintLayout>
