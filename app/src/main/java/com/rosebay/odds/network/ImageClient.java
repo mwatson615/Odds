@@ -17,7 +17,7 @@ public class ImageClient {
 
     public Observable<ImageResponse> fetchImages(String description, String queryTerms) {
         return mImageApi.getImages(
-                BuildConfig.ImgApiKey, BuildConfig.CustomSearchEngine, description, queryTerms,
+                BuildConfig.ApiKey, BuildConfig.CustomSearchEngine, description, queryTerms,
                 Constants.IMAGE_SEARCH_NUM, Constants.IMAGE_SEARCH_TYPE);
     }
 

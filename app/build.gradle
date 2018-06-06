@@ -24,8 +24,8 @@ android {
         applicationId "com.rosebay.odds"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 2
-        versionName "1"
+        versionCode 3
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         javaCompileOptions {
@@ -38,16 +38,17 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField('String', 'ImgApiKey', ProdApiKey)
+            buildConfigField('String', 'ApiKey', ProdApiKey)
             buildConfigField('String', 'AdUnitID', AdUnitID)
-            buildConfigField('String', 'AdMobID', AdMobID)
             signingConfig signingConfigs.config
         }
         debug {
             testCoverageEnabled true
-            buildConfigField('String', 'ImgApiKey', DevApiKey)
+            buildConfigField('String', 'ApiKey', DevApiKey)
+            buildConfigField('String', 'AdUnitID', TestAdUnitID)
         }
         buildTypes.each {
+            it.buildConfigField('String', 'AdMobID', AdMobID)
             it.buildConfigField('String', 'BaseImageUrl', BaseImageUrl)
             it.buildConfigField('String', 'CustomSearchEngine', CustomSearchEngine)
             it.buildConfigField('String', 'BaseFirebaseUrl', BaseFirebaseUrl)

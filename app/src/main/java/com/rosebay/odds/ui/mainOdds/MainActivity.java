@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements DisclaimerFragmen
         ButterKnife.bind(this);
         OddsApplication.getAppComponent().inject(this);
         MobileAds.initialize(this, BuildConfig.AdMobID);
-
+        //TODO : CHANGE AD DETAILS
         AdRequest request = new AdRequest.Builder()
                 .build();
         mAdView.loadAd(request);
