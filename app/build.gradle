@@ -78,7 +78,9 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.google.android.gms:play-services-analytics:16.0.0'
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
-    implementation 'com.google.apis:google-api-services-customsearch:v1-rev59-1.23.0'
+    implementation('com.google.apis:google-api-services-customsearch:v1-rev59-1.23.0') {
+        exclude module: 'guava-jdk5'
+    }
     implementation 'com.google.firebase:firebase-core:16.0.0'
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.google.firebase:firebase-ads:15.0.1'

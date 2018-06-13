@@ -14,6 +14,7 @@ import com.rosebay.odds.model.SingleOdd;
 import com.rosebay.odds.network.FirebaseClient;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -43,7 +44,8 @@ public class MainOddsPresenterImpl extends AbstractPresenter<MainOddsView> imple
             DataSnapshotMapper.listOf(SingleOdd.class))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(getView()::setData);
+            .doOnSuccess(Collections::reverse)
+            .subscribe(result -> getView().setData(result));
     }
 
     @SuppressLint("CheckResult")

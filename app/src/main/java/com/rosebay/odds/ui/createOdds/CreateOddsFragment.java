@@ -27,7 +27,6 @@ import com.rosebay.odds.OddsApplication;
 import com.rosebay.odds.R;
 import com.rosebay.odds.model.SingleOdd;
 import com.rosebay.odds.util.SharedPreferencesClient;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

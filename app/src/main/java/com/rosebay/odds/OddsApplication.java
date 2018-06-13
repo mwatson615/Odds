@@ -3,13 +3,10 @@ package com.rosebay.odds;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDex;
 
 import com.rosebay.odds.dagger.component.AppComponent;
 import com.rosebay.odds.dagger.component.DaggerAppComponent;
 import com.rosebay.odds.dagger.module.ContextModule;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 
 import timber.log.Timber;
 

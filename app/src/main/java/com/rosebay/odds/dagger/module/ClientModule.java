@@ -2,11 +2,14 @@ package com.rosebay.odds.dagger.module;
 
 import android.content.SharedPreferences;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosebay.odds.dagger.component.OddsApplicationScope;
 import com.rosebay.odds.network.CloudFunctionsApi;
 import com.rosebay.odds.network.CloudFunctionsClient;
 import com.rosebay.odds.network.FirebaseApi;
 import com.rosebay.odds.network.FirebaseClient;
+import com.rosebay.odds.network.FirestorePostClient;
+import com.rosebay.odds.network.FirestoreUserClient;
 import com.rosebay.odds.network.ImageApi;
 import com.rosebay.odds.network.ImageClient;
 import com.rosebay.odds.util.SharedPreferencesClient;
@@ -42,6 +45,18 @@ public class ClientModule {
     @OddsApplicationScope
     SharedPreferencesClient providesUsernamePrefClient(SharedPreferences sharedPreferences) {
         return new SharedPreferencesClient(sharedPreferences);
+    }
+
+    @Provides
+    @OddsApplicationScope
+    FirestoreUserClient providesFirestoreUserClient(@Named("userStore") FirebaseFirestore firebaseFirestore) {
+        return new FirestoreUserClient(firebaseFirestore);
+    }
+
+    @Provides
+    @OddsApplicationScope
+    FirestorePostClient providesFirestorePostClient(@Named("postStore") FirebaseFirestore firebaseFirestore) {
+        return new FirestorePostClient(firebaseFirestore);
     }
 
 }

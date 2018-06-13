@@ -17,11 +17,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rosebay.odds.Constants;
-import com.rosebay.odds.OddsApplication;
 import com.rosebay.odds.R;
 import com.rosebay.odds.model.SingleOdd;
 import com.rosebay.odds.ui.singleOdd.SingleOddFragment;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 

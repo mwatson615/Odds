@@ -22,7 +22,6 @@ import com.rosebay.odds.OddsApplication;
 import com.rosebay.odds.R;
 import com.rosebay.odds.model.SingleOdd;
 import com.rosebay.odds.util.SharedPreferencesClient;
-import com.squareup.leakcanary.RefWatcher;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
@@ -113,7 +112,7 @@ public class SingleOddFragment extends Fragment implements SingleOddView {
     @Override
     public void setImageUrl(String imageUrl) {
         Uri uri = Uri.parse(imageUrl);
-        Picasso.with(getContext()).load(uri).into(mImageView);
+        Picasso.with(getContext()).load(uri).fit().into(mImageView);
     }
 
     @Override

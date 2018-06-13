@@ -15,7 +15,6 @@ import durdinapps.rxfirebase2.RxFirebaseDatabase;
 import easymvp.AbstractPresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 public class DisclaimerPresenterImpl extends AbstractPresenter<DisclaimerView> implements DisclaimerPresenter {
 

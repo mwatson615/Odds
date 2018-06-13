@@ -12,7 +12,6 @@ import com.rosebay.odds.model.Favorite;
 import com.rosebay.odds.model.SingleOdd;
 import com.rosebay.odds.model.Vote;
 import com.rosebay.odds.network.CloudFunctionsClient;
-import com.rosebay.odds.network.FirebaseClient;
 
 import java.util.HashMap;
 import java.util.Map;
