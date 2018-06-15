@@ -47,7 +47,7 @@
             android:id="@+id/percentageSingleOdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:textAlignment="center"
@@ -61,15 +61,15 @@
             tools:text="95%"/>
 
         <TextView
-            android:id="@+id/singleOddDueDateTextview"
+            android:id="@+id/singleOddCreationTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
-            android:textSize="18sp"
             android:fontFamily="@font/averia_sans_libre_light"
-            android:text="@string/due_date_answer"/>
+            android:text="@string/created_by_date"
+            android:textAlignment="center"
+            android:textSize="18sp"/>
 
         <LinearLayout
             android:id="@+id/labelsLinearLayout"

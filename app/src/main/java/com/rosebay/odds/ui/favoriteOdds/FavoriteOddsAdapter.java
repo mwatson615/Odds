@@ -39,7 +39,9 @@ public class FavoriteOddsAdapter extends RecyclerView.Adapter<FavoriteOddsAdapte
     @Override
     public void onBindViewHolder(@NonNull FavoriteOddsAdapter.FavoriteOddsViewHolder holder, int position) {
         SingleOdd singleOdd = mOddsList.get(position);
-        holder.mCreatedByTextView.setText(mContext.getResources().getString(R.string.created_by, singleOdd.getUsername()));
+        if (singleOdd.getUsername() != null) {
+            holder.mCreatedByTextView.setText(mContext.getResources().getString(R.string.created_by, singleOdd.getUsername()));
+        }
         holder.mDescription.setText(singleOdd.getDescription());
         if (TextUtils.isEmpty(singleOdd.getDueDate())) {
             holder.mDueDateTextView.setVisibility(View.GONE);
@@ -52,7 +54,6 @@ public class FavoriteOddsAdapter extends RecyclerView.Adapter<FavoriteOddsAdapte
         Uri uri = Uri.parse(singleOdd.getImageUrl());
         mContext = holder.mImageView.getContext();
         Picasso.with(mContext).load(uri).fit().into(holder.mImageView);
-
     }
 
     @Override

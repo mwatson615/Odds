@@ -54,4 +54,6 @@
     <string name="percent_sign">%</string>
     <string name="fake_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="ad_unit_id">ca-app-pub-5863725671734709/2263936347</string>
+    <string name="back_btn_msg">Press Back Again to Exit</string>
+    <string name="created_by_date">Created by %1$s on %2$s</string>
 </resources>

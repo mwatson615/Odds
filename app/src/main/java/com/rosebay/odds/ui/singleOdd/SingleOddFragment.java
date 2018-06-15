@@ -24,8 +24,6 @@ import com.rosebay.odds.model.SingleOdd;
 import com.rosebay.odds.util.SharedPreferencesClient;
 import com.squareup.picasso.Picasso;
 
-import java.util.Objects;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -49,8 +47,8 @@ public class SingleOddFragment extends Fragment implements SingleOddView {
     TextView mDescription;
     @BindView(R.id.percentageSingleOdd)
     TextView mPercentage;
-    @BindView(R.id.singleOddDueDateTextview)
-    TextView mSingleOddDueDateTextView;
+    @BindView(R.id.singleOddCreationTextView)
+    TextView mSingleOddCreationTextView;
     @BindView(R.id.oddsForSingleOdd)
     TextView mOddsForTextView;
     @BindView(R.id.oddsAgainstSingleOdd)
@@ -116,12 +114,8 @@ public class SingleOddFragment extends Fragment implements SingleOddView {
     }
 
     @Override
-    public void setDueDate(String dueDate) {
-        if (!Objects.equals(dueDate, "") && dueDate != null) {
-            mSingleOddDueDateTextView.setText(String.format(getString(R.string.due_date_answer), dueDate));
-        } else {
-            mSingleOddDueDateTextView.setVisibility(View.GONE);
-        }
+    public void setCreationInfo(String username, String creationDate) {
+        mSingleOddCreationTextView.setText(getString(R.string.created_by_date, username, creationDate));
     }
 
     @Override

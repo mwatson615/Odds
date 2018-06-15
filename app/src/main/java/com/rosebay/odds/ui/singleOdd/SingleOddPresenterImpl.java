@@ -135,7 +135,7 @@ public class SingleOddPresenterImpl extends AbstractPresenter<SingleOddView> imp
         getView().setOddsFor(singleOdd.getOddsFor());
         getView().setOddsAgainst(singleOdd.getOddsAgainst());
         getView().setDescription(singleOdd.getDescription());
-        getView().setDueDate(singleOdd.getDueDate());
+        getView().setCreationInfo(singleOdd.getUsername(), singleOdd.getDateSubmitted());
         getView().setImageUrl(singleOdd.getImageUrl());
 
     }
