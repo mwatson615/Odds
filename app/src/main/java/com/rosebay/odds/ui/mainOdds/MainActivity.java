@@ -127,12 +127,12 @@ public class MainActivity extends AppCompatActivity implements DisclaimerFragmen
 
     @Override
     public void onBackPressed() {
-        Timber.i(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()) + " : back pressed");
         if ((backPressed + 1000 > System.currentTimeMillis()) && (getSupportFragmentManager().getBackStackEntryCount() == 1)) {
             moveTaskToBack(true);
         } else if (getSupportFragmentManager().getBackStackEntryCount() == 1){
             Snackbar.make(mBottomMenu, "Press BACK again to exit", Snackbar.LENGTH_SHORT).show();
         } else {
+            mBottomMenu.getMenu().getItem(0).setChecked(true);
             getMainOddsFragment();
         }
         backPressed = System.currentTimeMillis();
