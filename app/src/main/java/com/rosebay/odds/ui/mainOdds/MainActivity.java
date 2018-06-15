@@ -2,9 +2,12 @@ package com.rosebay.odds.ui.mainOdds;
 
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.ads.AdRequest;
@@ -23,6 +26,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements DisclaimerFragment.OnUsernameSavedListener {
 
@@ -34,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements DisclaimerFragmen
     @BindView(R.id.adView)
     AdView mAdView;
 
+    long backPressed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements DisclaimerFragmen
         ButterKnife.bind(this);
         OddsApplication.getAppComponent().inject(this);
         MobileAds.initialize(this, BuildConfig.AdMobID);
-        //TODO : CHANGE AD DETAILS
         AdRequest request = new AdRequest.Builder()
                 .build();
         mAdView.loadAd(request);
@@ -93,14 +98,15 @@ public class MainActivity extends AppCompatActivity implements DisclaimerFragmen
     }
 
     public void createFragment(Fragment fragment) {
-        getSupportFragmentManager().popBackStack();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        Timber.i(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
         transaction.replace(R.id.fragment_container, fragment);
         transaction.commit();
     }
 
     public void getMainOddsFragment() {
         MainOddsFragment fragment = MainOddsFragment.newInstance();
+        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         createFragment(fragment);
     }
 
@@ -117,6 +123,19 @@ public class MainActivity extends AppCompatActivity implements DisclaimerFragmen
     public void getFavoriteOddsFragment() {
         FavoriteOddsFragment fragment = FavoriteOddsFragment.newInstance();
         createFragment(fragment);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Timber.i(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()) + " : back pressed");
+        if ((backPressed + 1000 > System.currentTimeMillis()) && (getSupportFragmentManager().getBackStackEntryCount() == 1)) {
+            moveTaskToBack(true);
+        } else if (getSupportFragmentManager().getBackStackEntryCount() == 1){
+            Snackbar.make(mBottomMenu, "Press BACK again to exit", Snackbar.LENGTH_SHORT).show();
+        } else {
+            getMainOddsFragment();
+        }
+        backPressed = System.currentTimeMillis();
     }
 
     @Override
