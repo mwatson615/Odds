@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements DisclaimerFragmen
         if ((backPressed + 1000 > System.currentTimeMillis()) && (getSupportFragmentManager().getBackStackEntryCount() == 1)) {
             moveTaskToBack(true);
         } else if (getSupportFragmentManager().getBackStackEntryCount() == 1){
-            Snackbar.make(mBottomMenu, "Press BACK again to exit", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(mBottomMenu, R.string.back_btn_msg, Snackbar.LENGTH_SHORT).show();
         } else {
             mBottomMenu.getMenu().getItem(0).setChecked(true);
             getMainOddsFragment();
