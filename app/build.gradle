@@ -59,7 +59,7 @@ android {
         }
     }
     testOptions {
-//        execution 'ANDROID_TEST_ORCHESTRATOR'
+        execution 'ANDROID_TEST_ORCHESTRATOR'
         animationsDisabled true
     }
     compileOptions {

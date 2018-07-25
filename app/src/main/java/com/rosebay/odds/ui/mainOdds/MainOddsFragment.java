@@ -3,7 +3,6 @@ package com.rosebay.odds.ui.mainOdds;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,12 +14,10 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.rosebay.odds.Constants;
 import com.rosebay.odds.OddsApplication;
 import com.rosebay.odds.R;
 import com.rosebay.odds.model.SingleOdd;
-import com.rosebay.odds.ui.NavigationInterface;
-import com.rosebay.odds.ui.singleOdd.SingleOddFragment;
+import com.rosebay.odds.ui.CreateSingleOddInterface;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
@@ -57,7 +54,7 @@ public class MainOddsFragment extends Fragment implements MainOddsView, MainOdds
     ProgressBar mProgressBar;
 
     MainOddsAdapter mMainOddsAdapter;
-    NavigationInterface navigationInterface;
+    CreateSingleOddInterface createSingleOddInterface;
 
     public static MainOddsFragment newInstance() {
         return new MainOddsFragment();
@@ -179,7 +176,7 @@ public class MainOddsFragment extends Fragment implements MainOddsView, MainOdds
 
     @Override
     public void launchSingleOdd(SingleOdd singleOdd) {
-        navigationInterface.getSingleOddsFragment(singleOdd);
+        createSingleOddInterface.getSingleOddsFragment(singleOdd);
     }
 
     @Override

@@ -17,7 +17,8 @@ import com.rosebay.odds.Constants;
 import com.rosebay.odds.OddsApplication;
 import com.rosebay.odds.R;
 import com.rosebay.odds.model.SingleOdd;
-import com.rosebay.odds.ui.NavigationInterface;
+import com.rosebay.odds.ui.CreateSingleOddInterface;
+import com.rosebay.odds.ui.OnUsernameSavedInterface;
 import com.rosebay.odds.ui.createOdds.CreateOddsFragment;
 import com.rosebay.odds.ui.disclaimer.DisclaimerFragment;
 import com.rosebay.odds.ui.favoriteOdds.FavoriteOddsFragment;
@@ -30,9 +31,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements DisclaimerFragment.OnUsernameSavedListener, NavigationInterface {
+public class MainActivity extends AppCompatActivity implements OnUsernameSavedInterface, CreateSingleOddInterface {
 
     @Inject
     SharedPreferencesClient usernamePreferencesClient;
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements DisclaimerFragmen
 
 
     public void showDisclaimerDialog() {
-        DisclaimerFragment fragment = DisclaimerFragment.newInstance();
+        DisclaimerFragment fragment = DisclaimerFragment.Companion.newInstance();
         createFragment(fragment);
     }
 

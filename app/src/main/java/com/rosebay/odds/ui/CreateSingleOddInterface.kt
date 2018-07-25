@@ -3,7 +3,7 @@ package com.rosebay.odds.ui
 import com.rosebay.odds.model.SingleOdd
 
 
-interface NavigationInterface {
+interface CreateSingleOddInterface {
 
     fun getSingleOddsFragment(singleOdd: SingleOdd)
 

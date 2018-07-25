@@ -13,10 +13,8 @@ import android.support.test.runner.AndroidJUnit4
 import android.view.View
 import android.widget.AutoCompleteTextView
 import com.rosebay.odds.model.SingleOdd
-import com.rosebay.odds.ui.NavigationInterface
 import com.rosebay.odds.ui.mainOdds.MainOddsFragment
 import com.rosebay.odds.ui.mainOdds.MainOddsPresenterImpl
-import com.rosebay.odds.ui.singleOdd.SingleOddFragment
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
