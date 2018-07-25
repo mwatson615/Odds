@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import durdinapps.rxfirebase2.DataSnapshotMapper;
@@ -30,11 +29,11 @@ import io.reactivex.schedulers.Schedulers;
 public class MainOddsPresenterImpl extends AbstractPresenter<MainOddsView> implements MainOddsPresenter {
 
     @Inject
-    DatabaseReference databaseReference;
+    public DatabaseReference databaseReference;
     @Inject
-    FirebaseClient firebaseClient;
+    public FirebaseClient firebaseClient;
     @VisibleForTesting
-    MainOddsView mainOddsView;
+    public MainOddsView view;
 
     @SuppressLint("CheckResult")
     public void fetchOdds() {
@@ -44,6 +43,7 @@ public class MainOddsPresenterImpl extends AbstractPresenter<MainOddsView> imple
             DataSnapshotMapper.listOf(SingleOdd.class))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnError(error -> getView().onError())
             .doOnSuccess(Collections::reverse)
             .subscribe(result -> getView().setData(result));
     }
@@ -100,10 +100,9 @@ public class MainOddsPresenterImpl extends AbstractPresenter<MainOddsView> imple
         super.onViewDetached();
     }
 
-    @Nullable
     @Override
     public MainOddsView getView() {
-        return super.getView() == null ? mainOddsView : super.getView();
+        return super.getView() != null ? super.getView() : view;
     }
 }
 

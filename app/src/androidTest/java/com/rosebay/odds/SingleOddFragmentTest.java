@@ -102,16 +102,11 @@ public class SingleOddFragmentTest {
     }
 
     @Test
-    public void testSetHasDueDate() throws Throwable {
-        singleOddFragmentRule.runOnUiThread(() -> singleOddFragment.setDueDate(singleOdd.getDueDate()));
-        onView(withId(R.id.singleOddDueDateTextview)).check(matches(withText(
-                targetContext.getResources().getString(R.string.due_date_answer, singleOdd.getDueDate()))));
-    }
-
-    @Test
-    public void testSetNullDueDate() throws Throwable {
-        singleOddFragmentRule.runOnUiThread(() -> singleOddFragment.setDueDate(null));
-        onView(withId(R.id.singleOddDueDateTextview)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
+    public void testSetCreationInfo() throws Throwable {
+        singleOddFragmentRule.runOnUiThread(() -> singleOddFragment.setCreationInfo(singleOdd.getUsername(),
+                singleOdd.getDateSubmitted()));
+        onView(withId(R.id.singleOddCreationTextView)).check(matches(withText(
+                targetContext.getResources().getString(R.string.created_by_date, singleOdd.getUsername(), singleOdd.getDateSubmitted()))));
     }
 
     @Test

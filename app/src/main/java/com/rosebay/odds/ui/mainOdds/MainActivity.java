@@ -13,13 +13,18 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.rosebay.odds.BuildConfig;
+import com.rosebay.odds.Constants;
 import com.rosebay.odds.OddsApplication;
 import com.rosebay.odds.R;
+import com.rosebay.odds.model.SingleOdd;
+import com.rosebay.odds.ui.NavigationInterface;
 import com.rosebay.odds.ui.createOdds.CreateOddsFragment;
 import com.rosebay.odds.ui.disclaimer.DisclaimerFragment;
 import com.rosebay.odds.ui.favoriteOdds.FavoriteOddsFragment;
 import com.rosebay.odds.ui.myOdds.MyOddsFragment;
+import com.rosebay.odds.ui.singleOdd.SingleOddFragment;
 import com.rosebay.odds.util.SharedPreferencesClient;
+import com.squareup.leakcanary.RefWatcher;
 
 import javax.inject.Inject;
 
@@ -27,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements DisclaimerFragment.OnUsernameSavedListener {
+public class MainActivity extends AppCompatActivity implements DisclaimerFragment.OnUsernameSavedListener, NavigationInterface {
 
     @Inject
     SharedPreferencesClient usernamePreferencesClient;
@@ -97,10 +102,21 @@ public class MainActivity extends AppCompatActivity implements DisclaimerFragmen
     }
 
     public void createFragment(Fragment fragment) {
-        Timber.i(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
         transaction.replace(R.id.fragment_container, fragment);
         transaction.commit();
+    }
+
+    @Override
+    public void getSingleOddsFragment(SingleOdd singleOdd) {
+        SingleOddFragment fragment = SingleOddFragment.newInstance();
+        Bundle args = new Bundle();
+        args.putSerializable(Constants.SINGLE_ODD_KEY, singleOdd);
+        fragment.setArguments(args);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(fragment.getTag());
+        fragmentTransaction.commit();
     }
 
     public void getMainOddsFragment() {
@@ -143,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements DisclaimerFragmen
             mAdView.destroy();
         }
         super.onDestroy();
+            RefWatcher refWatcher = OddsApplication.getRefWatcher(getApplication());
+            refWatcher.watch(this);
     }
 
 }

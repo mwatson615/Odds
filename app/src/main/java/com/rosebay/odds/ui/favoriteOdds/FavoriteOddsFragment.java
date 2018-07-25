@@ -15,8 +15,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.rosebay.odds.OddsApplication;
 import com.rosebay.odds.R;
 import com.rosebay.odds.model.SingleOdd;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
@@ -115,5 +117,12 @@ public class FavoriteOddsFragment extends Fragment implements FavoriteOddsView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = OddsApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }

@@ -27,6 +27,7 @@ import com.rosebay.odds.OddsApplication;
 import com.rosebay.odds.R;
 import com.rosebay.odds.model.SingleOdd;
 import com.rosebay.odds.util.SharedPreferencesClient;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -302,6 +303,13 @@ public class CreateOddsFragment extends Fragment implements CreateOddsView, Date
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = OddsApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
 }

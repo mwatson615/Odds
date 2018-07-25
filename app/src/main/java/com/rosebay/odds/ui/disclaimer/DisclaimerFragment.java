@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.rosebay.odds.OddsApplication;
 import com.rosebay.odds.R;
 import com.rosebay.odds.util.SharedPreferencesClient;
+import com.squareup.leakcanary.RefWatcher;
 
 import javax.inject.Inject;
 
@@ -74,8 +75,8 @@ public class DisclaimerFragment extends Fragment implements DisclaimerView {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         disclaimerPresenter.onViewDetached();
     }
 
@@ -158,6 +159,13 @@ public class DisclaimerFragment extends Fragment implements DisclaimerView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = OddsApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
 }

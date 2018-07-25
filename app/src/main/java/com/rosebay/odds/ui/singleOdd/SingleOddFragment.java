@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
@@ -21,8 +22,12 @@ import com.rosebay.odds.Constants;
 import com.rosebay.odds.OddsApplication;
 import com.rosebay.odds.R;
 import com.rosebay.odds.model.SingleOdd;
+import com.rosebay.odds.ui.NavigationInterface;
 import com.rosebay.odds.util.SharedPreferencesClient;
+import com.squareup.leakcanary.RefWatcher;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -179,13 +184,20 @@ public class SingleOddFragment extends Fragment implements SingleOddView {
 
     @VisibleForTesting
     public void attach(SingleOddPresenterImpl presenter) {
-            singleOddPresenter = presenter;
-            singleOddPresenter.onViewAttached(this);
+        singleOddPresenter = presenter;
+        singleOddPresenter.onViewAttached(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = OddsApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }
