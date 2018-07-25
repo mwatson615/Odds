@@ -47,7 +47,7 @@ import easymvp.annotation.Presenter;
 public class CreateOddsFragment extends Fragment implements CreateOddsView, DatePickerDialog.OnDateSetListener {
 
     @Presenter
-    CreateOddsPresenterImpl createOddsPresenter;
+    public CreateOddsPresenterImpl createOddsPresenter;
 
     @Inject
     SharedPreferencesClient sharedPreferencesClient;
