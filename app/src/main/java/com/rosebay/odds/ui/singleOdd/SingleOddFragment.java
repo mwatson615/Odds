@@ -40,7 +40,7 @@ public class SingleOddFragment extends Fragment implements SingleOddView {
     SharedPreferencesClient sharedPreferencesClient;
 
     @Presenter
-    SingleOddPresenterImpl singleOddPresenter;
+    public SingleOddPresenterImpl singleOddPresenter;
 
     @BindView(R.id.imageURLImageView)
     ImageView mImageView;
