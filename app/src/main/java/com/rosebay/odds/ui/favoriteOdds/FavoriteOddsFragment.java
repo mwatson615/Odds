@@ -31,7 +31,7 @@ import easymvp.annotation.Presenter;
 public class FavoriteOddsFragment extends Fragment implements FavoriteOddsView {
 
     @Presenter
-    FavoriteOddsPresenterImpl favoriteOddsPresenter;
+    public FavoriteOddsPresenterImpl favoriteOddsPresenter;
 
     FavoriteOddsAdapter favoriteOddsAdapter;
 
@@ -101,12 +101,6 @@ public class FavoriteOddsFragment extends Fragment implements FavoriteOddsView {
     public void onPause() {
         super.onPause();
         favoriteOddsPresenter.onViewDetached();
-    }
-
-    @VisibleForTesting
-    public void attach(FavoriteOddsPresenterImpl presenter) {
-        favoriteOddsPresenter = presenter;
-        favoriteOddsPresenter.onViewAttached(this);
     }
 
     @Override
