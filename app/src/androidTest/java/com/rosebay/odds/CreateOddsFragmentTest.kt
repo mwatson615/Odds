@@ -2,18 +2,25 @@ package com.rosebay.odds
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso
+import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.action.ViewActions.typeText
+import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.contrib.PickerActions
 import android.support.test.espresso.matcher.ViewMatchers
+import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
+import android.view.View
 import android.widget.DatePicker
-
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.ui.createOdds.CreateOddsFragment
 import com.rosebay.odds.ui.createOdds.CreateOddsPresenterImpl
+import com.rosebay.odds.ui.createOdds.CreateOddsView
 import com.rosebay.odds.ui.createOdds.ImagePagerAdapter
 import com.rosebay.odds.util.SharedPreferencesClient
-
+import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers
 import org.junit.After
 import org.junit.Before
@@ -21,31 +28,14 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
-
-import java.util.ArrayList
-
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.action.ViewActions.typeText
-import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.hasFocus
-import android.support.test.espresso.matcher.ViewMatchers.isChecked
-import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
-import android.support.test.espresso.matcher.ViewMatchers.withClassName
-import android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.matcher.ViewMatchers.withText
-import android.view.View
-import com.rosebay.odds.ui.createOdds.CreateOddsView
-import org.hamcrest.CoreMatchers.allOf
-import org.hamcrest.CoreMatchers.not
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.InjectMocks
-import org.mockito.Mockito.verify
+import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
+import org.mockito.MockitoAnnotations
+import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class CreateOddsFragmentTest {

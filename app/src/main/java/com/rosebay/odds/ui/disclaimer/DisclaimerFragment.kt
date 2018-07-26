@@ -1,8 +1,6 @@
 package com.rosebay.odds.ui.disclaimer
 
-import android.content.Context
 import android.os.Bundle
-import android.support.annotation.VisibleForTesting
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.SearchView
@@ -13,20 +11,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
-
-import com.rosebay.odds.OddsApplication
-import com.rosebay.odds.R
-import com.rosebay.odds.util.SharedPreferencesClient
-import com.squareup.leakcanary.RefWatcher
-
-import javax.inject.Inject
-
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.rosebay.odds.OddsApplication
+import com.rosebay.odds.R
 import com.rosebay.odds.ui.OnUsernameSavedInterface
+import com.rosebay.odds.util.SharedPreferencesClient
 import easymvp.annotation.FragmentView
 import easymvp.annotation.Presenter
+import javax.inject.Inject
 
 @FragmentView(presenter = DisclaimerPresenterImpl::class)
 class DisclaimerFragment : Fragment(), DisclaimerView {

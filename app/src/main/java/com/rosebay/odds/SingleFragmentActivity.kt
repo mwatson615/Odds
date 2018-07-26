@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.rosebay.odds.ui.OnUsernameSavedInterface
-import com.rosebay.odds.ui.disclaimer.DisclaimerFragment
 
 @RestrictTo(RestrictTo.Scope.TESTS)
 class SingleFragmentActivity : AppCompatActivity(), OnUsernameSavedInterface {

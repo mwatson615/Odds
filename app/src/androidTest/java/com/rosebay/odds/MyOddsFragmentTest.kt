@@ -1,5 +1,6 @@
 package com.rosebay.odds
 
+import android.content.Context
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.assertion.ViewAssertions.matches
@@ -12,8 +13,9 @@ import android.support.test.runner.AndroidJUnit4
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.rosebay.odds.model.SingleOdd
-import com.rosebay.odds.ui.favoriteOdds.FavoriteOddsFragment
-import com.rosebay.odds.ui.favoriteOdds.FavoriteOddsPresenterImpl
+import com.rosebay.odds.ui.myOdds.MyOddsFragment
+import com.rosebay.odds.ui.myOdds.MyOddsPresenterImpl
+import com.rosebay.odds.util.SharedPreferencesClient
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -22,20 +24,30 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import java.util.*
 
 @RunWith(AndroidJUnit4::class)
-class FavoriteOddsFragmentTest {
+class MyOddsFragmentTest {
 
     @Mock
-    lateinit var mockPresenter: FavoriteOddsPresenterImpl
+    private
+    lateinit var mockPresenter: MyOddsPresenterImpl
+    @Mock
+    private
+    lateinit var mockPrefClient : SharedPreferencesClient
     @InjectMocks
-    lateinit var fragment: FavoriteOddsFragment
-    private lateinit var testList: List<SingleOdd>
+    private
+    lateinit var fragment: MyOddsFragment
+    private lateinit var testListMyOdds: List<SingleOdd>
+    private lateinit var context : Context
+    private lateinit var username : String
 
     @get:Rule
     var rule = ActivityTestRule(SingleFragmentActivity::class.java)
@@ -44,54 +56,53 @@ class FavoriteOddsFragmentTest {
     @Throws(Throwable::class)
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        testList = createTestList()
-        fragment.favoriteOddsPresenter = mockPresenter
+        context = InstrumentationRegistry.getTargetContext()
+        testListMyOdds = createTestList()
+        fragment.myOddsPresenter = mockPresenter
         rule.activity.setFragment(fragment)
+        username = context.resources.getString(R.string.username)
+        mockPresenter.onViewAttached(fragment)
+        `when`(mockPrefClient.getUsername(any())).thenReturn(username)
     }
 
     @Test
     @Throws(Throwable::class)
-    fun testInit() {
-        onView(withId(R.id.favoritesProgressBar)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
-        onView(withId(R.id.favoritesRecyclerView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
-        onView(withId(R.id.noFavoriteOddsTextView)).check(matches(isDisplayed()))
-        verify<FavoriteOddsPresenterImpl>(mockPresenter).getAllFavorites()
+    fun testInitialFetch() {
+        onView(withId(R.id.fragmentMyOdds)).check(matches(isDisplayed()))
+        verify<MyOddsPresenterImpl>(mockPresenter).fetchMyOdds(anyString())
     }
 
     @Test
     @Throws(Throwable::class)
-    fun testSetData() {
-        rule.runOnUiThread { run { fragment.setData(testList) } }
-        onView(withId(R.id.favoritesRecyclerView)).check(matches(isDisplayed()))
-        onView(withId(R.id.noFavoriteOddsTextView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.favoritesProgressBar)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.favoritesRecyclerView))
-                .check(matches(atPosition(0, hasDescendant(withText(testList[0].description)))))
-        onView(withId(R.id.favoritesRecyclerView))
-                .check(matches(atPosition(0, hasDescendant(withText(testList[0].oddsAgainst.toString())))))
-        onView(withId(R.id.favoritesRecyclerView))
-                .check(matches(atPosition(0, hasDescendant(withText(testList[0].oddsFor.toString())))))
-        onView(withId(R.id.favoritesRecyclerView))
+    fun testOnPause() {
+        rule.runOnUiThread { run { fragment.onPause() } }
+        verify<MyOddsPresenterImpl>(mockPresenter).onViewDetached()
+    }
+
+    @Test
+    @Throws(Throwable::class)
+    fun testLoadingWithOdds() {
+        rule.runOnUiThread { run { fragment.onResponse(testListMyOdds) } }
+        onView(withId(R.id.noMyOddsTextView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+        onView(withId(R.id.myOddsRecyclerView)).check(matches(isDisplayed()))
+        onView(withId(R.id.myOddsRecyclerView))
+                .check(matches(atPosition(0, hasDescendant(withText(testListMyOdds[0].description)))))
+        onView(withId(R.id.myOddsRecyclerView))
+                .check(matches(atPosition(0, hasDescendant(withText(testListMyOdds[0].oddsAgainst.toString())))))
+        onView(withId(R.id.myOddsRecyclerView))
+                .check(matches(atPosition(0, hasDescendant(withText(testListMyOdds[0].oddsFor.toString())))))
+        onView(withId(R.id.myOddsRecyclerView))
                 .check(matches(atPosition(0, hasDescendant(withText(InstrumentationRegistry.getTargetContext().resources
-                        .getString(R.string.percentage_text, testList!![0].percentage))))))
+                        .getString(R.string.percentage_text, testListMyOdds[0].percentage))))))
     }
 
     @Test
     @Throws(Throwable::class)
-    fun testNoFavorites() {
-        rule.runOnUiThread { run { fragment.noFavorites() } }
-        onView(withId(R.id.favoritesRecyclerView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.favoritesProgressBar)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.noFavoriteOddsTextView)).check(matches(isDisplayed()))
-    }
-
-    @Test
-    @Throws(Throwable::class)
-    fun testOnLoading() {
-        rule.runOnUiThread { run { fragment.onLoading() } }
-        onView(withId(R.id.favoritesRecyclerView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
-        onView(withId(R.id.noFavoriteOddsTextView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
-        onView(withId(R.id.favoritesProgressBar)).check(matches(isDisplayed()))
+    fun testLoadingWithoutOdds() {
+        rule.runOnUiThread { run { fragment.onNoResponse() } }
+        onView(withId(R.id.noMyOddsTextView)).check(matches(isDisplayed()))
+        onView(withId(R.id.myOddsRecyclerView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+        onView(withId(R.id.myOddsProgressBar)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
     }
 
     @Test
@@ -134,7 +145,6 @@ class FavoriteOddsFragmentTest {
 
                 override fun matchesSafely(view: RecyclerView): Boolean {
                     val viewHolder = view.findViewHolderForAdapterPosition(position)
-                    // has no item on such position
                     return viewHolder != null && itemMatcher.matches(viewHolder.itemView)
                 }
             }

@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements OnUsernameSavedIn
     }
 
     public void getMyOddsFragment() {
-        MyOddsFragment fragment = MyOddsFragment.newInstance();
+        MyOddsFragment fragment = MyOddsFragment.Companion.newInstance();
         createFragment(fragment);
     }
 
