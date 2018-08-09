@@ -12,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class DisclaimerPresenterImpl : AbstractPresenter<DisclaimerView>(), DisclaimerPresenter {
+open class DisclaimerPresenterImpl : AbstractPresenter<DisclaimerView>(), DisclaimerPresenter {
 
     @Inject
     lateinit var firebaseClient: FirebaseClient
