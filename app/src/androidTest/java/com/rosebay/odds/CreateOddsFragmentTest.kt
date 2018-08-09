@@ -48,10 +48,10 @@ class CreateOddsFragmentTest {
     var mockClient: SharedPreferencesClient? = null
     @InjectMocks
     lateinit var fragment: CreateOddsFragment
-    private var testImageList: List<String>? = null
+    lateinit var testImageList: List<String>
 
     @get:Rule
-    var testRule = ActivityTestRule(SingleFragmentActivity::class.java)
+    var testRule = ActivityTestRule(SingleFragmentTestActivity::class.java)
 
     @Before
     @Throws(Throwable::class)
@@ -210,7 +210,7 @@ class CreateOddsFragmentTest {
     fun testClearTextFields() {
         onView(withId(R.id.descriptionEditText)).perform(typeText("Word"))
         onView(withId(R.id.imageSearchTermsEditText)).perform(typeText("terms"))
-        testRule.runOnUiThread { fragment!!.clearTextFields() }
+        testRule.runOnUiThread { fragment.clearTextFields() }
         onView(withId(R.id.descriptionEditText)).check(matches(withText("")))
         onView(withId(R.id.imageSearchTermsEditText)).check(matches(withText("")))
     }
@@ -273,7 +273,7 @@ class CreateOddsFragmentTest {
         testRule.finishActivity()
     }
 
-    fun createImageStringList(): List<String> {
+    private fun createImageStringList(): List<String> {
         val stringList = ArrayList<String>()
         stringList.add("https://images.pexels.com/photos/937465/pexels-photo-937465.jpeg?auto=compress&cs=tinysrgb&h=350")
         return stringList

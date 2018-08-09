@@ -42,7 +42,7 @@ class DisclaimerFragmentTest {
     lateinit var context: Context
 
     @get:Rule
-    var testRule = ActivityTestRule(SingleFragmentActivity::class.java, false, true)
+    var testRule = ActivityTestRule(SingleFragmentTestActivity::class.java, false, false)
 
     @Before
     @Throws(Throwable::class)
@@ -52,6 +52,7 @@ class DisclaimerFragmentTest {
         fragment = DisclaimerFragment()
         fragment.mCallback = mockCallback
         fragment.disclaimerPresenter = mockPresenter
+        testRule.launchActivity(null)
         testRule.activity.setFragment(fragment)
         mockPresenter.onViewAttached(fragment)
     }
@@ -72,7 +73,7 @@ class DisclaimerFragmentTest {
     @Test
     @Throws(Throwable::class)
     fun testOnUsernameAvailable() {
-        testRule.runOnUiThread { fragment.onUsernameAvailable(anyString()) }
+        testRule.runOnUiThread { run { fragment.onUsernameAvailable(context.resources.getString(R.string.username)) } }
         onView(withId(R.id.usernameSearchProgressBar)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
         onView(withId(R.id.saveUsernameButton)).check(matches(isDisplayed())).check(matches(isEnabled())).perform(click())
         verify<DisclaimerPresenterImpl>(mockPresenter).saveUsername(anyString())

@@ -38,7 +38,7 @@ class FavoriteOddsFragmentTest {
     private lateinit var testList: List<SingleOdd>
 
     @get:Rule
-    var rule = ActivityTestRule(SingleFragmentActivity::class.java)
+    var rule = ActivityTestRule(SingleFragmentTestActivity::class.java)
 
     @Before
     @Throws(Throwable::class)

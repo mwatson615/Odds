@@ -23,5 +23,4 @@ public class ContextModule {
     public Context providesContext(){
         return context;
     }
-
 }

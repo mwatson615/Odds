@@ -40,7 +40,7 @@ class MainOddsFragmentTest {
     lateinit var targetContext: Context
 
     @get:Rule
-    var rule = ActivityTestRule(SingleFragmentActivity::class.java, false, true)
+    var rule = ActivityTestRule(SingleFragmentTestActivity::class.java, false, true)
 
     @Before
     @Throws(Throwable::class)

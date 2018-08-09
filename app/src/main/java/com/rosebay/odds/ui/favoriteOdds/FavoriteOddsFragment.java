@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.rosebay.odds.Mockable;
 import com.rosebay.odds.OddsApplication;
 import com.rosebay.odds.R;
 import com.rosebay.odds.model.SingleOdd;
@@ -26,6 +27,7 @@ import butterknife.ButterKnife;
 import easymvp.annotation.FragmentView;
 import easymvp.annotation.Presenter;
 
+@Mockable
 @FragmentView(presenter = FavoriteOddsPresenterImpl.class)
 public class FavoriteOddsFragment extends Fragment implements FavoriteOddsView {
 
@@ -115,7 +117,7 @@ public class FavoriteOddsFragment extends Fragment implements FavoriteOddsView {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = OddsApplication.getRefWatcher(getActivity());
+        RefWatcher refWatcher = OddsApplication.Companion.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }
 }

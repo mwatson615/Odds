@@ -39,7 +39,7 @@ class SingleOddFragmentTest {
     private var targetContext: Context? = null
 
     @get:Rule
-    var rule = ActivityTestRule(SingleFragmentActivity::class.java)
+    var rule = ActivityTestRule(SingleFragmentTestActivity::class.java)
 
     @Before
     @Throws(Throwable::class)

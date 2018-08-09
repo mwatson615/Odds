@@ -1,5 +1,6 @@
 package com.rosebay.odds.ui.myOdds
 
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -21,7 +22,7 @@ import easymvp.annotation.Presenter
 import javax.inject.Inject
 
 @FragmentView(presenter = MyOddsPresenterImpl::class)
-class MyOddsFragment : Fragment(), MyOddsView {
+open class MyOddsFragment : Fragment(), MyOddsView {
 
     @Presenter
     lateinit var myOddsPresenter: MyOddsPresenterImpl
@@ -43,8 +44,12 @@ class MyOddsFragment : Fragment(), MyOddsView {
         val root = inflater.inflate(R.layout.fragment_my_odds,
                 container, false)
         ButterKnife.bind(this, root)
-        OddsApplication.getAppComponent().inject(this)
         return root
+    }
+
+    override fun onAttach(context: Context) {
+        OddsApplication.appComponent.inject(this)
+        super.onAttach(context)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

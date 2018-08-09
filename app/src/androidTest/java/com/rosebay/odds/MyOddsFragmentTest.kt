@@ -50,7 +50,7 @@ class MyOddsFragmentTest {
     private lateinit var username : String
 
     @get:Rule
-    var rule = ActivityTestRule(SingleFragmentActivity::class.java)
+    var rule = ActivityTestRule(SingleFragmentTestActivity::class.java)
 
     @Before
     @Throws(Throwable::class)

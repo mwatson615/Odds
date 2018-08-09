@@ -1,5 +1,6 @@
 package com.rosebay.odds.ui.disclaimer
 
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -23,10 +24,10 @@ import easymvp.annotation.Presenter
 import javax.inject.Inject
 
 @FragmentView(presenter = DisclaimerPresenterImpl::class)
-class DisclaimerFragment : Fragment(), DisclaimerView {
+open class DisclaimerFragment : Fragment(), DisclaimerView {
 
     @Presenter
-    lateinit var disclaimerPresenter: DisclaimerPresenterImpl
+    var disclaimerPresenter: DisclaimerPresenterImpl? = null
 
     @Inject
     lateinit var sharedPreferencesClient: SharedPreferencesClient
@@ -45,20 +46,24 @@ class DisclaimerFragment : Fragment(), DisclaimerView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_disclaimer_username, container, false)
         ButterKnife.bind(this, root)
-        OddsApplication.getAppComponent().inject(this)
         showSearchLayout()
         mSaveButton.isEnabled = false
         return root
     }
 
+    override fun onAttach(context: Context) {
+        OddsApplication.appComponent.inject(this)
+        super.onAttach(context)
+    }
+
     override fun onResume() {
         super.onResume()
-        disclaimerPresenter.onViewAttached(this)
+        disclaimerPresenter?.onViewAttached(this)
     }
 
     override fun onPause() {
         super.onPause()
-        disclaimerPresenter.onViewDetached()
+        disclaimerPresenter?.onViewDetached()
     }
 
     override fun onUsernameAvailable(username: String) {
@@ -80,7 +85,7 @@ class DisclaimerFragment : Fragment(), DisclaimerView {
         mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (!TextUtils.isEmpty(query)) {
-                    disclaimerPresenter!!.checkForUsername(mSearchView.query.toString())
+                    disclaimerPresenter?.checkForUsername(mSearchView.query.toString())
                     return true
                 }
                 return false
@@ -108,13 +113,13 @@ class DisclaimerFragment : Fragment(), DisclaimerView {
     @OnClick(R.id.disclaimerSearchView)
     fun searchForUsername() {
         if (mSearchView.query.toString() != "") {
-            disclaimerPresenter.checkForUsername(mSearchView.query.toString())
+            disclaimerPresenter?.checkForUsername(mSearchView.query.toString())
         }
     }
 
     @OnClick(R.id.saveUsernameButton)
     fun saveUsername() {
-        disclaimerPresenter.saveUsername(mSearchView.query.toString())
+        disclaimerPresenter?.saveUsername(mSearchView.query.toString())
     }
 
     override fun onDestroy() {
