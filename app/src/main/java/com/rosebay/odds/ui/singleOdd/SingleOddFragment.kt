@@ -18,6 +18,7 @@ import com.rosebay.odds.util.Constants
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.R
 import com.rosebay.odds.model.SingleOdd
+import com.rosebay.odds.util.Mockable
 import com.rosebay.odds.util.SharedPreferencesClient
 import com.squareup.picasso.Picasso
 import easymvp.annotation.FragmentView
@@ -26,9 +27,6 @@ import javax.inject.Inject
 
 @FragmentView(presenter = SingleOddPresenterImpl::class)
 class SingleOddFragment : Fragment(), SingleOddView {
-
-    @Inject
-    lateinit var sharedPreferencesClient: SharedPreferencesClient
 
     @Presenter
     lateinit var singleOddPresenter: SingleOddPresenterImpl
@@ -54,12 +52,14 @@ class SingleOddFragment : Fragment(), SingleOddView {
     @BindView(R.id.voteLayout)
     lateinit var mVoteLayout: LinearLayout
 
-    private var mSingleOdd: SingleOdd? = null
+    private lateinit var mSingleOdd: SingleOdd
+    private lateinit var mUsername : String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_single_odd, container, false)
         ButterKnife.bind(this, root)
         mSingleOdd = arguments?.getSerializable(Constants.SINGLE_ODD_KEY) as SingleOdd
+        mUsername = arguments?.getString(Constants.USERNAME) as String
         return root
     }
 
@@ -70,9 +70,9 @@ class SingleOddFragment : Fragment(), SingleOddView {
 
     override fun onResume() {
         super.onResume()
-        singleOddPresenter.checkForFavorite(mSingleOdd!!.postId)
-        singleOddPresenter.checkIfVoted(mSingleOdd!!.postId)
-        singleOddPresenter.loadOddsData(mSingleOdd!!)
+        singleOddPresenter.checkForFavorite(mSingleOdd.postId)
+        singleOddPresenter.checkIfVoted(mSingleOdd.postId)
+        singleOddPresenter.loadOddsData(mSingleOdd)
     }
 
     override fun onPause() {
@@ -81,7 +81,7 @@ class SingleOddFragment : Fragment(), SingleOddView {
     }
 
     override fun setPercentage(percentage: Int) {
-        mPercentage.text = String.format(getString(R.string.percentage_text), percentage)
+        mPercentage.text = context!!.getString(R.string.percentage_text, percentage)
     }
 
     override fun setOddsFor(oddsFor: Int) {
@@ -111,17 +111,17 @@ class SingleOddFragment : Fragment(), SingleOddView {
 
     @OnClick(R.id.voteYesButton)
     fun voteYes() {
-        singleOddPresenter.voteYes(mSingleOdd!!.postId)
+        singleOddPresenter.voteYes(mSingleOdd.postId)
     }
 
     @OnClick(R.id.voteNoButton)
     fun voteNo() {
-        singleOddPresenter.voteNo(mSingleOdd!!.postId)
+        singleOddPresenter.voteNo(mSingleOdd.postId)
     }
 
     @OnClick(R.id.addToFavoritesButton)
     fun addToFavorites() {
-        singleOddPresenter.addToFavorites(sharedPreferencesClient!!.getUsername(getString(R.string.username)), mSingleOdd!!.postId)
+        singleOddPresenter.addToFavorites(mUsername, mSingleOdd.postId)
     }
 
     override fun onVoteSuccess() {
@@ -159,8 +159,8 @@ class SingleOddFragment : Fragment(), SingleOddView {
 
     override fun onDestroy() {
         super.onDestroy()
-        val refWatcher = OddsApplication.getRefWatcher(activity!!)
-        refWatcher.watch(this)
+//        val refWatcher = OddsApplication.getRefWatcher(activity!!)
+//        refWatcher.watch(this)
     }
 
     companion object {

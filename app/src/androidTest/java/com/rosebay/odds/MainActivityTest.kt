@@ -19,6 +19,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyString
+import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
@@ -45,14 +46,13 @@ class MainActivityTest {
         context = InstrumentationRegistry.getTargetContext()
         username = context.resources.getString(R.string.username)
         `when`(mockSharedPrefsClient.getUsername(anyString())).thenReturn(username)
+        rule.activity.usernamePreferencesClient = mockSharedPrefsClient
         mainActivity = rule.launchActivity(null)
         Espresso.closeSoftKeyboard()
     }
 
     @Test
     fun testInit() {
-        mainActivity.usernamePreferencesClient = mockSharedPrefsClient
-        mainActivity.fragmentFactory = mockFragmentFactory
         run { mainActivity.loadInitialView() }
         onView(withId(R.id.adView)).check(matches(isDisplayed()))
     }

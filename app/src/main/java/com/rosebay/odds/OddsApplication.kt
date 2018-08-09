@@ -12,7 +12,7 @@ import timber.log.Timber
 
 class OddsApplication : Application() {
 
-    private lateinit var refWatcher: RefWatcher
+    lateinit var refWatcher: RefWatcher
 
     override fun onCreate() {
         super.onCreate()
@@ -20,7 +20,7 @@ class OddsApplication : Application() {
                 .builder()
                 .contextModule(ContextModule((this)))
                 .build()
-//        plantTimber()
+        plantTimber()
         if (LeakCanary.isInAnalyzerProcess(this)) return
         initLeakCanary()
     }

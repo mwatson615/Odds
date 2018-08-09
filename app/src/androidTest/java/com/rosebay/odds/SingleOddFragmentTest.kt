@@ -11,10 +11,14 @@ import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.view.View
+import com.rosebay.odds.R.string.username
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.ui.singleOdd.SingleOddFragment
 import com.rosebay.odds.ui.singleOdd.SingleOddPresenterImpl
 import com.rosebay.odds.util.Constants
+import com.rosebay.odds.util.SharedPreferencesClient
+import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertTrue
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
@@ -26,6 +30,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 
@@ -33,11 +38,15 @@ import org.mockito.MockitoAnnotations
 class SingleOddFragmentTest {
 
     @Mock
+    private
     lateinit var mockPresenter: SingleOddPresenterImpl
+
     @InjectMocks
+    private
     lateinit var fragment: SingleOddFragment
-    private var singleOdd: SingleOdd? = null
+    private lateinit var singleOdd: SingleOdd
     private var targetContext: Context? = null
+    private lateinit var username : String
 
     @get:Rule
     var rule = ActivityTestRule(SingleFragmentTestActivity::class.java)
@@ -47,9 +56,9 @@ class SingleOddFragmentTest {
     fun setup() {
         MockitoAnnotations.initMocks(this)
         targetContext = InstrumentationRegistry.getTargetContext()
-        fragment.singleOddPresenter = mockPresenter
         fragment.arguments = createTestSingleOdd()
         singleOdd = fragment.arguments!!.getSerializable(Constants.SINGLE_ODD_KEY) as SingleOdd
+        username = fragment.arguments!!.getString(Constants.USERNAME)
         rule.activity.setFragment(fragment)
     }
 
@@ -59,7 +68,7 @@ class SingleOddFragmentTest {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
         verify<SingleOddPresenterImpl>(mockPresenter).checkForFavorite(anyString())
         verify<SingleOddPresenterImpl>(mockPresenter).checkIfVoted(anyString())
-        verify<SingleOddPresenterImpl>(mockPresenter).loadOddsData(any(SingleOdd::class.java))
+        verify<SingleOddPresenterImpl>(mockPresenter).loadOddsData(singleOdd)
     }
 
     @Test
@@ -80,41 +89,41 @@ class SingleOddFragmentTest {
     @Test
     @Throws(Throwable::class)
     fun testSetPercentage() {
-        rule.runOnUiThread { run { fragment.setPercentage(singleOdd!!.percentage) } }
+        rule.runOnUiThread { run { fragment.setPercentage(singleOdd.percentage) } }
         onView(withId(R.id.percentageSingleOdd)).check(matches(withText(
-                targetContext!!.resources.getString(R.string.percentage_text, singleOdd!!.percentage))))
+                targetContext!!.resources.getString(R.string.percentage_text, singleOdd.percentage))))
     }
 
     @Test
     @Throws(Throwable::class)
     fun testSetOddsFor() {
-        rule.runOnUiThread { run { fragment.setOddsFor(singleOdd!!.oddsFor) } }
-        onView(withId(R.id.oddsForSingleOdd)).check(matches(withText(singleOdd!!.oddsFor.toString())))
+        rule.runOnUiThread { run { fragment.setOddsFor(singleOdd.oddsFor) } }
+        onView(withId(R.id.oddsForSingleOdd)).check(matches(withText(singleOdd.oddsFor.toString())))
     }
 
     @Test
     @Throws(Throwable::class)
     fun testSetOddsAgainst() {
-        rule.runOnUiThread { run { fragment.setOddsAgainst(singleOdd!!.oddsAgainst) } }
-        onView(withId(R.id.oddsAgainstSingleOdd)).check(matches(withText(singleOdd!!.oddsAgainst.toString())))
+        rule.runOnUiThread { run { fragment.setOddsAgainst(singleOdd.oddsAgainst) } }
+        onView(withId(R.id.oddsAgainstSingleOdd)).check(matches(withText(singleOdd.oddsAgainst.toString())))
     }
 
     @Test
     @Throws(Throwable::class)
     fun testSetCreationInfo() {
         rule.runOnUiThread {
-            fragment.setCreationInfo(singleOdd!!.username,
-                    singleOdd!!.dateSubmitted)
+            fragment.setCreationInfo(singleOdd.username,
+                    singleOdd.dateSubmitted)
         }
         onView(withId(R.id.singleOddCreationTextView)).check(matches(withText(
-                targetContext!!.resources.getString(R.string.created_by_date, singleOdd!!.username, singleOdd!!.dateSubmitted))))
+                targetContext!!.resources.getString(R.string.created_by_date, singleOdd.username, singleOdd.dateSubmitted))))
     }
 
     @Test
     @Throws(Throwable::class)
     fun testSetDescription() {
-        rule.runOnUiThread { run { fragment.setDescription(singleOdd!!.description) } }
-        onView(withId(R.id.descriptionSingleOdd)).check(matches(withText(singleOdd!!.description)))
+        rule.runOnUiThread { run { fragment.setDescription(singleOdd.description) } }
+        onView(withId(R.id.descriptionSingleOdd)).check(matches(withText(singleOdd.description)))
     }
 
     @Test
@@ -147,8 +156,8 @@ class SingleOddFragmentTest {
     @Throws(Throwable::class)
     fun testAddToFavorites() {
         rule.runOnUiThread { run { fragment.enableFavoritesButton() } }
-        onView(withId(R.id.addToFavoritesButton)).perform(click())
-        verify<SingleOddPresenterImpl>(mockPresenter).addToFavorites(any(), anyString())
+        onView(withId(R.id.addToFavoritesButton)).check(matches(isEnabled())).check(matches(isClickable())).perform(click())
+        verify<SingleOddPresenterImpl>(mockPresenter).addToFavorites(targetContext!!.resources.getString(R.string.username), singleOdd.postId)
     }
 
     @Test
@@ -201,7 +210,9 @@ class SingleOddFragmentTest {
         singleOdd.imageUrl = "https://images.pexels.com/photos/937465/pexels-photo-937465.jpeg?auto=compress&cs=tinysrgb&h=350"
         singleOdd.description = "The Buddha"
         singleOdd.postId = "12345"
+        singleOdd.username = "username"
         args.putSerializable(Constants.SINGLE_ODD_KEY, singleOdd)
+        args.putString(Constants.USERNAME, "username")
         return args
     }
 

@@ -82,6 +82,7 @@ class MainActivity : AppCompatActivity(), OnUsernameSavedInterface, CreateSingle
         val fragment = SingleOddFragment.newInstance()
         val args = Bundle()
         args.putSerializable(Constants.SINGLE_ODD_KEY, singleOdd)
+        args.putString(Constants.USERNAME, usernamePreferencesClient.getUsername(resources.getString(R.string.username)))
         fragment.arguments = args
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.add(R.id.fragment_container, fragment)
@@ -106,8 +107,8 @@ class MainActivity : AppCompatActivity(), OnUsernameSavedInterface, CreateSingle
             mAdView.destroy()
         }
         super.onDestroy()
-        val refWatcher = OddsApplication.getRefWatcher(application)
-        refWatcher.watch(this)
+//        val refWatcher = OddsApplication.getRefWatcher(application)
+//        refWatcher.watch(this)
     }
 
     companion object {

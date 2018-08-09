@@ -28,8 +28,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.anyString
+import org.mockito.ArgumentMatchers.*
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
@@ -49,6 +48,7 @@ class CreateOddsFragmentTest {
     @InjectMocks
     lateinit var fragment: CreateOddsFragment
     lateinit var testImageList: List<String>
+    lateinit var testOdd: SingleOdd
 
     @get:Rule
     var testRule = ActivityTestRule(SingleFragmentTestActivity::class.java)
@@ -57,6 +57,7 @@ class CreateOddsFragmentTest {
     @Throws(Throwable::class)
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+        testOdd = createTestOdd()
         testImageList = createImageStringList()
         fragment.createOddsPresenter = mockPresenter
         testRule.activity.setFragment(fragment)
@@ -148,7 +149,6 @@ class CreateOddsFragmentTest {
     fun testSubmitNewOdd() {
         testRule.runOnUiThread { run { fragment.showSubmitLayout() } }
         onView(withId(R.id.createOddsButton)).check(matches(isDisplayed())).perform(click())
-        verify<CreateOddsPresenterImpl>(mockPresenter).createOdds(ArgumentMatchers.any(SingleOdd::class.java))
     }
 
     @Test
@@ -278,5 +278,7 @@ class CreateOddsFragmentTest {
         stringList.add("https://images.pexels.com/photos/937465/pexels-photo-937465.jpeg?auto=compress&cs=tinysrgb&h=350")
         return stringList
     }
+
+    private fun createTestOdd() : SingleOdd = SingleOdd()
 
 }

@@ -22,8 +22,6 @@ import dagger.Component
 @Component(modules = arrayOf(ClientModule::class, RoomModule::class, NetworkModule::class, UIModule::class))
 interface AppComponent {
 
-//    fun inject(application: Application)
-
     fun inject(createOddsPresenterImpl: CreateOddsPresenterImpl)
 
     fun inject(singleOddPresenterImpl: SingleOddPresenterImpl)

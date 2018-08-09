@@ -11,6 +11,7 @@ import com.rosebay.odds.model.Favorite
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.model.Vote
 import com.rosebay.odds.network.CloudFunctionsClient
+import com.rosebay.odds.util.Mockable
 import easymvp.AbstractPresenter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,7 +19,8 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
-class SingleOddPresenterImpl : AbstractPresenter<SingleOddView>(), SingleOddPresenter {
+
+open class SingleOddPresenterImpl : AbstractPresenter<SingleOddView>(), SingleOddPresenter {
 
     @Inject
     lateinit var cloudFunctionsClient: CloudFunctionsClient

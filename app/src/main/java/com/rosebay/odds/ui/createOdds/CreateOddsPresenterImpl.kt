@@ -12,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class CreateOddsPresenterImpl : AbstractPresenter<CreateOddsView>(), CreateOddsPresenter {
+open class CreateOddsPresenterImpl : AbstractPresenter<CreateOddsView>(), CreateOddsPresenter {
 
     @Inject
     lateinit var imageClient: ImageClient
