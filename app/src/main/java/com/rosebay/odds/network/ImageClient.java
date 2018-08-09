@@ -2,7 +2,7 @@ package com.rosebay.odds.network;
 
 
 import com.rosebay.odds.BuildConfig;
-import com.rosebay.odds.Constants;
+import com.rosebay.odds.util.Constants;
 import com.rosebay.odds.model.ImageResponse;
 
 import io.reactivex.Observable;

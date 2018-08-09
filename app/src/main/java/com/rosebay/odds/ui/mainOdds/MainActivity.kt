@@ -18,6 +18,8 @@ import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.ui.CreateSingleOddInterface
 import com.rosebay.odds.ui.OnUsernameSavedInterface
 import com.rosebay.odds.ui.singleOdd.SingleOddFragment
+import com.rosebay.odds.util.Constants
+import com.rosebay.odds.util.FragmentFactoryInt
 import com.rosebay.odds.util.SharedPreferencesClient
 import javax.inject.Inject
 

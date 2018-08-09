@@ -3,7 +3,7 @@ package com.rosebay.odds.ui.createOdds
 
 import android.support.annotation.VisibleForTesting
 import com.google.firebase.database.DatabaseReference
-import com.rosebay.odds.Constants
+import com.rosebay.odds.util.Constants
 import com.rosebay.odds.model.ImageItem
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.network.ImageClient

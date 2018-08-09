@@ -3,7 +3,7 @@ package com.rosebay.odds.ui.singleOdd
 
 import android.annotation.SuppressLint
 import android.support.annotation.VisibleForTesting
-import com.rosebay.odds.Constants
+import com.rosebay.odds.util.Constants
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.localStorage.FavoriteDao
 import com.rosebay.odds.localStorage.VoteDao

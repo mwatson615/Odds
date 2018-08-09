@@ -4,7 +4,7 @@ package com.rosebay.odds.ui.myOdds
 import android.annotation.SuppressLint
 import android.support.annotation.VisibleForTesting
 import com.google.firebase.database.DatabaseReference
-import com.rosebay.odds.Constants
+import com.rosebay.odds.util.Constants
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.model.SingleOdd
 import durdinapps.rxfirebase2.RxFirebaseQuery

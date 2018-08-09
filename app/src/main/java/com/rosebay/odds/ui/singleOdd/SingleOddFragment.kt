@@ -14,7 +14,7 @@ import android.widget.*
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
-import com.rosebay.odds.Constants
+import com.rosebay.odds.util.Constants
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.R
 import com.rosebay.odds.model.SingleOdd

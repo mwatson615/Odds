@@ -14,6 +14,7 @@ import android.view.View
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.ui.singleOdd.SingleOddFragment
 import com.rosebay.odds.ui.singleOdd.SingleOddPresenterImpl
+import com.rosebay.odds.util.Constants
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.junit.After

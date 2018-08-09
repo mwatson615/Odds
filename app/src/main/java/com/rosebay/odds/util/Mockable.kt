@@ -1,4 +1,4 @@
-package com.rosebay.odds
+package com.rosebay.odds.util
 
 
 annotation class Mockable {

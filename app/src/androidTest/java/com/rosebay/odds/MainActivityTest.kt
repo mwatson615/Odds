@@ -11,6 +11,7 @@ import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.rosebay.odds.ui.mainOdds.MainActivity
+import com.rosebay.odds.util.FragmentFactoryInt
 import com.rosebay.odds.util.SharedPreferencesClient
 import org.junit.After
 import org.junit.Before

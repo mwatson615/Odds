@@ -1,4 +1,4 @@
-package com.rosebay.odds
+package com.rosebay.odds.util
 
 import com.rosebay.odds.ui.createOdds.CreateOddsFragment
 import com.rosebay.odds.ui.disclaimer.DisclaimerFragment
