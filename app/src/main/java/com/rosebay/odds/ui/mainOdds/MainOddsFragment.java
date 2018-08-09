@@ -198,8 +198,8 @@ public class MainOddsFragment extends Fragment implements MainOddsView, MainOdds
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = OddsApplication.Companion.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = OddsApplication.Companion.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 
     @Override

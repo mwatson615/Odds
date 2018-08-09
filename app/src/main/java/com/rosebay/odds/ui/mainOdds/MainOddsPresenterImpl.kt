@@ -18,7 +18,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
-class MainOddsPresenterImpl : AbstractPresenter<MainOddsView>(), MainOddsPresenter {
+open class MainOddsPresenterImpl : AbstractPresenter<MainOddsView>(), MainOddsPresenter {
 
     @Inject
     lateinit var databaseReference: DatabaseReference
