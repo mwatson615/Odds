@@ -117,7 +117,7 @@ public class FavoriteOddsFragment extends Fragment implements FavoriteOddsView {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = OddsApplication.Companion.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = OddsApplication.Companion.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 }
