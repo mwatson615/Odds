@@ -9,4 +9,10 @@ public interface MainOddsPresenter {
 
     void fetchSingleOdd(String postId);
 
+    void onViewAttached(MainOddsView view);
+
+    MainOddsView getView();
+
+    void onViewDetached();
+
 }

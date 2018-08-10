@@ -11,8 +11,6 @@ public interface SingleOddView {
 
     void setImageUrl(String imageUrl);
 
-    void setDueDate(String dueDate);
-
     void setDescription(String description);
 
     void onAddedToFavorites();
@@ -28,5 +26,7 @@ public interface SingleOddView {
     void disableFavoritesButton();
 
     void enableFavoritesButton();
+
+    void setCreationInfo(String username, String creationDate);
 
 }

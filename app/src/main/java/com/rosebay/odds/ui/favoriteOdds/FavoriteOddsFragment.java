@@ -3,7 +3,6 @@ package com.rosebay.odds.ui.favoriteOdds;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 import com.rosebay.odds.OddsApplication;
 import com.rosebay.odds.R;
 import com.rosebay.odds.model.SingleOdd;
+import com.rosebay.odds.util.Mockable;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
@@ -27,11 +27,12 @@ import butterknife.ButterKnife;
 import easymvp.annotation.FragmentView;
 import easymvp.annotation.Presenter;
 
+@Mockable
 @FragmentView(presenter = FavoriteOddsPresenterImpl.class)
 public class FavoriteOddsFragment extends Fragment implements FavoriteOddsView {
 
     @Presenter
-    FavoriteOddsPresenterImpl favoriteOddsPresenter;
+    public FavoriteOddsPresenterImpl favoriteOddsPresenter;
 
     FavoriteOddsAdapter favoriteOddsAdapter;
 
@@ -103,12 +104,6 @@ public class FavoriteOddsFragment extends Fragment implements FavoriteOddsView {
         favoriteOddsPresenter.onViewDetached();
     }
 
-    @VisibleForTesting
-    public void attach(FavoriteOddsPresenterImpl presenter) {
-        favoriteOddsPresenter = presenter;
-        favoriteOddsPresenter.onViewAttached(this);
-    }
-
     @Override
     public void onError() {
         Snackbar.make(mLayout, R.string.bats_data_error, Snackbar.LENGTH_SHORT).show();
@@ -117,5 +112,12 @@ public class FavoriteOddsFragment extends Fragment implements FavoriteOddsView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = OddsApplication.Companion.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }

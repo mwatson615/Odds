@@ -2,6 +2,7 @@ package com.rosebay.odds.dagger.module;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -67,6 +68,12 @@ public class ServiceModule {
     @OddsApplicationScope
     DatabaseReference providesFirebaseReference() {
         return FirebaseDatabase.getInstance().getReference();
+    }
+
+    @Provides
+    @OddsApplicationScope
+    FirebaseFirestore providesUserFirestore() {
+        return FirebaseFirestore.getInstance();
     }
 
 }

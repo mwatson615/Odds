@@ -29,18 +29,6 @@ public class FavoriteOddsAdapter extends RecyclerView.Adapter<FavoriteOddsAdapte
         mContext = context;
     }
 
-    public String setDueDate(String dueDate) {
-        return mContext.getString(R.string.due_date_answer, dueDate);
-    }
-
-    private String setPercentage(int percent) {
-        return percent + mContext.getString(R.string.percent_sign);
-    }
-
-    private String setCreatedBy(String username) {
-        return mContext.getString(R.string.created_by, username);
-    }
-
     @NonNull
     @Override
     public FavoriteOddsAdapter.FavoriteOddsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -51,20 +39,21 @@ public class FavoriteOddsAdapter extends RecyclerView.Adapter<FavoriteOddsAdapte
     @Override
     public void onBindViewHolder(@NonNull FavoriteOddsAdapter.FavoriteOddsViewHolder holder, int position) {
         SingleOdd singleOdd = mOddsList.get(position);
-        holder.mCreatedByTextView.setText(setCreatedBy(singleOdd.getUsername()));
+        if (singleOdd.getUsername() != null) {
+            holder.mCreatedByTextView.setText(mContext.getResources().getString(R.string.created_by, singleOdd.getUsername()));
+        }
         holder.mDescription.setText(singleOdd.getDescription());
         if (TextUtils.isEmpty(singleOdd.getDueDate())) {
             holder.mDueDateTextView.setVisibility(View.GONE);
         } else {
-            holder.mDueDateTextView.setText(setDueDate(singleOdd.getDueDate()));
+            holder.mDueDateTextView.setText(mContext.getResources().getString(R.string.due_date_answer, singleOdd.getDueDate()));
         }
         holder.mOddsAgainstTextView.setText(String.valueOf(singleOdd.getOddsAgainst()));
         holder.mOddsForTextView.setText(String.valueOf(singleOdd.getOddsFor()));
-        holder.mPercentageTextView.setText(String.valueOf(setPercentage(singleOdd.getPercentage())));
+        holder.mPercentageTextView.setText(mContext.getResources().getString(R.string.percentage_text, singleOdd.getPercentage()));
         Uri uri = Uri.parse(singleOdd.getImageUrl());
         mContext = holder.mImageView.getContext();
         Picasso.with(mContext).load(uri).fit().into(holder.mImageView);
-
     }
 
     @Override

@@ -19,7 +19,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
@@ -206,7 +205,7 @@ public class SingleOddPresenterTest {
         verify(mockView).setOddsFor(testSingleOdd.getOddsFor());
         verify(mockView).setOddsAgainst(testSingleOdd.getOddsAgainst());
         verify(mockView).setDescription(testSingleOdd.getDescription());
-        verify(mockView).setDueDate(testSingleOdd.getDueDate());
+        verify(mockView).setCreationInfo(testSingleOdd.getUsername(), testSingleOdd.getDateSubmitted());
         verify(mockView).setImageUrl(testSingleOdd.getImageUrl());
     }
 
@@ -229,6 +228,7 @@ public class SingleOddPresenterTest {
         singleOdd.setPercentage(50);
         singleOdd.setOddsAgainst(25);
         singleOdd.setDueDate("12/27/1978");
+        singleOdd.setUsername("user");
         singleOdd.setOddsFor(25);
         singleOdd.setDateSubmitted("01/01/2018");
         singleOdd.setImageUrl("https://images.pexels.com/photos/937465/pexels-photo-937465.jpeg?auto=compress&cs=tinysrgb&h=350");

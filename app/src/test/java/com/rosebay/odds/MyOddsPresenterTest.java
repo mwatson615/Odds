@@ -1,6 +1,5 @@
 package com.rosebay.odds;
 
-import com.google.firebase.database.DatabaseReference;
 import com.rosebay.odds.ui.myOdds.MyOddsPresenterImpl;
 import com.rosebay.odds.ui.myOdds.MyOddsView;
 
@@ -18,7 +17,6 @@ import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MyOddsPresenterTest {
