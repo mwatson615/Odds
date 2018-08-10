@@ -156,8 +156,8 @@ class SingleOddFragment : Fragment(), SingleOddView {
 
     override fun onDestroy() {
         super.onDestroy()
-//        val refWatcher = OddsApplication.getRefWatcher(activity!!)
-//        refWatcher.watch(this)
+        val refWatcher = OddsApplication.getRefWatcher(activity!!)
+        refWatcher.watch(this)
     }
 
     companion object {

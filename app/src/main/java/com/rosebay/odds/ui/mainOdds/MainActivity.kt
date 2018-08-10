@@ -109,8 +109,8 @@ class MainActivity : AppCompatActivity(), OnUsernameSavedInterface, CreateSingle
             mAdView.destroy()
         }
         super.onDestroy()
-//        val refWatcher = OddsApplication.getRefWatcher(application)
-//        refWatcher.watch(this)
+        val refWatcher = OddsApplication.getRefWatcher(this)
+        refWatcher.watch(this)
     }
 
     companion object {

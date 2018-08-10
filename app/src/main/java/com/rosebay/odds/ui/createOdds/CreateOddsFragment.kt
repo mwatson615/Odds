@@ -270,8 +270,8 @@ open class CreateOddsFragment : Fragment(), CreateOddsView, DatePickerDialog.OnD
 
     override fun onDestroy() {
         super.onDestroy()
-//        val refWatcher = OddsApplication.getRefWatcher(this.activity!!.applicationContext.applicationContext)
-//        refWatcher.watch(this)
+        val refWatcher = OddsApplication.getRefWatcher(this.activity!!.applicationContext.applicationContext)
+        refWatcher.watch(this)
     }
 
     companion object {

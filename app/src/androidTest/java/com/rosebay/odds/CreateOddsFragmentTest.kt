@@ -40,15 +40,17 @@ import java.util.*
 class CreateOddsFragmentTest {
 
     @Mock
+    private
     lateinit var mockPresenter: CreateOddsPresenterImpl
     @Mock
-    var mockPagerAdapter: ImagePagerAdapter? = null
+    private var mockPagerAdapter: ImagePagerAdapter? = null
     @Mock
-    var mockClient: SharedPreferencesClient? = null
+    private var mockClient: SharedPreferencesClient? = null
     @InjectMocks
+    private
     lateinit var fragment: CreateOddsFragment
-    lateinit var testImageList: List<String>
-    lateinit var testOdd: SingleOdd
+    private lateinit var testImageList: List<String>
+    private lateinit var testOdd: SingleOdd
 
     @get:Rule
     var testRule = ActivityTestRule(SingleFragmentTestActivity::class.java)

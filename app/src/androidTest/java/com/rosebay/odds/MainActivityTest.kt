@@ -96,7 +96,6 @@ class MainActivityTest {
         rule.runOnUiThread { run { mainActivity.onUsernameSaved() } }
         onView(withId(R.id.adView)).check(matches(isDisplayed()))
         onView(withId(R.id.home_menu)).check(matches(isDisplayed()))
-
     }
 
     @After

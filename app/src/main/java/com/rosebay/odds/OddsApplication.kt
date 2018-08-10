@@ -2,6 +2,7 @@ package com.rosebay.odds
 
 
 import android.app.Application
+import android.content.Context
 import android.support.annotation.VisibleForTesting
 import com.rosebay.odds.dagger.component.AppComponent
 import com.rosebay.odds.dagger.component.DaggerAppComponent
@@ -12,20 +13,18 @@ import timber.log.Timber
 
 class OddsApplication : Application() {
 
+    private lateinit var refWatcher: RefWatcher
+
     override fun onCreate() {
         super.onCreate()
+        if (LeakCanary.isInAnalyzerProcess(this)) return
+        refWatcher = LeakCanary.install(this)
         appComponent = DaggerAppComponent
                 .builder()
                 .contextModule(ContextModule(this))
                 .build()
 
         plantTimber()
-        if (LeakCanary.isInAnalyzerProcess(this)) return
-        initLeakCanary()
-    }
-
-    private fun initLeakCanary() {
-        if (BuildConfig.DEBUG) LeakCanary.install(this)
     }
 
     @VisibleForTesting
@@ -41,7 +40,10 @@ class OddsApplication : Application() {
 
         lateinit var appComponent: AppComponent
 
-        lateinit var refWatcher: RefWatcher
+        fun getRefWatcher(context: Context): RefWatcher {
+            val application: OddsApplication = context.applicationContext as OddsApplication
+            return application.refWatcher
+        }
 
     }
 }
