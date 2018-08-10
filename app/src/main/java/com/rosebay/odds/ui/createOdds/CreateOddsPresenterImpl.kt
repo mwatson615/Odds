@@ -3,10 +3,10 @@ package com.rosebay.odds.ui.createOdds
 
 import android.support.annotation.VisibleForTesting
 import com.google.firebase.database.DatabaseReference
-import com.rosebay.odds.util.Constants
 import com.rosebay.odds.model.ImageItem
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.network.ImageClient
+import com.rosebay.odds.util.Constants
 import easymvp.AbstractPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

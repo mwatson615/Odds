@@ -13,7 +13,9 @@ import butterknife.ButterKnife
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
-import com.rosebay.odds.*
+import com.rosebay.odds.BuildConfig
+import com.rosebay.odds.OddsApplication
+import com.rosebay.odds.R
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.ui.CreateSingleOddInterface
 import com.rosebay.odds.ui.OnUsernameSavedInterface

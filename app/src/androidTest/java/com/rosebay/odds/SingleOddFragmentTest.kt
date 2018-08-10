@@ -11,14 +11,10 @@ import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.view.View
-import com.rosebay.odds.R.string.username
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.ui.singleOdd.SingleOddFragment
 import com.rosebay.odds.ui.singleOdd.SingleOddPresenterImpl
 import com.rosebay.odds.util.Constants
-import com.rosebay.odds.util.SharedPreferencesClient
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertTrue
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
@@ -26,11 +22,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 

@@ -5,10 +5,10 @@ import android.annotation.SuppressLint
 import android.support.annotation.VisibleForTesting
 import android.text.TextUtils
 import com.google.firebase.database.DatabaseReference
-import com.rosebay.odds.util.Constants
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.network.FirebaseClient
+import com.rosebay.odds.util.Constants
 import durdinapps.rxfirebase2.DataSnapshotMapper
 import durdinapps.rxfirebase2.RxFirebaseDatabase
 import durdinapps.rxfirebase2.RxFirebaseQuery

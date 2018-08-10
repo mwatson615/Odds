@@ -4,9 +4,9 @@ package com.rosebay.odds.ui.myOdds
 import android.annotation.SuppressLint
 import android.support.annotation.VisibleForTesting
 import com.google.firebase.database.DatabaseReference
-import com.rosebay.odds.util.Constants
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.model.SingleOdd
+import com.rosebay.odds.util.Constants
 import durdinapps.rxfirebase2.RxFirebaseQuery
 import easymvp.AbstractPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
-class MyOddsPresenterImpl : AbstractPresenter<MyOddsView>(), MyOddsPresenter {
+open class MyOddsPresenterImpl : AbstractPresenter<MyOddsView>(), MyOddsPresenter {
 
     @Inject
     lateinit var databaseReference: DatabaseReference

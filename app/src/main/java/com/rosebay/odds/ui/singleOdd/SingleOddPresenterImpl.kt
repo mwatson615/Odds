@@ -3,7 +3,6 @@ package com.rosebay.odds.ui.singleOdd
 
 import android.annotation.SuppressLint
 import android.support.annotation.VisibleForTesting
-import com.rosebay.odds.util.Constants
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.localStorage.FavoriteDao
 import com.rosebay.odds.localStorage.VoteDao
@@ -11,7 +10,7 @@ import com.rosebay.odds.model.Favorite
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.model.Vote
 import com.rosebay.odds.network.CloudFunctionsClient
-import com.rosebay.odds.util.Mockable
+import com.rosebay.odds.util.Constants
 import easymvp.AbstractPresenter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

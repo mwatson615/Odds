@@ -14,11 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.rosebay.odds.util.Mockable;
-import com.rosebay.odds.OddsApplication;
 import com.rosebay.odds.R;
 import com.rosebay.odds.model.SingleOdd;
-import com.squareup.leakcanary.RefWatcher;
+import com.rosebay.odds.util.Mockable;
 
 import java.util.List;
 

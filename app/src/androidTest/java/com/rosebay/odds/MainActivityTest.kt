@@ -1,5 +1,6 @@
 package com.rosebay.odds
 
+import Resources.espressoDaggerMockRule
 import android.content.Context
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso
@@ -19,48 +20,41 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
-import org.mockito.MockitoAnnotations
 
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
 
-    @Mock
-    lateinit var mockSharedPrefsClient: SharedPreferencesClient
-    @Mock
-    lateinit var mockFragmentFactory: FragmentFactoryInt
-
-    lateinit var mainActivity: MainActivity
-    private lateinit var context: Context
-    private lateinit var username : String
-
+    @get:Rule
+    val daggerRule = espressoDaggerMockRule()
     @get:Rule
     val rule = ActivityTestRule(MainActivity::class.java, false, false)
+    @Mock
+    private
+    lateinit var mockSharedPrefsClient: SharedPreferencesClient
+    @Mock
+    private
+    lateinit var mockFragmentFactory: FragmentFactoryInt
+
+    private lateinit var context: Context
+    private lateinit var username : String
+    private lateinit var mainActivity : MainActivity
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
         context = InstrumentationRegistry.getTargetContext()
         username = context.resources.getString(R.string.username)
         `when`(mockSharedPrefsClient.getUsername(anyString())).thenReturn(username)
-        rule.activity.usernamePreferencesClient = mockSharedPrefsClient
-        mainActivity = rule.launchActivity(null)
+        rule.launchActivity(null)
+        mainActivity = rule.activity
         Espresso.closeSoftKeyboard()
-    }
-
-    @Test
-    fun testInit() {
-        run { mainActivity.loadInitialView() }
-        onView(withId(R.id.adView)).check(matches(isDisplayed()))
     }
 
     @Test
     @Throws(Throwable::class)
     fun testLoadInitialHasUsernameShowMain() {
-        run { mainActivity.loadInitialView() }
         onView(withId(R.id.adView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
         onView(withId(R.id.home_menu)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
         verify(mockFragmentFactory).getMainOddsFragment()
@@ -69,9 +63,8 @@ class MainActivityTest {
     @Test
     @Throws(Throwable::class)
     fun testLoadInitialNullShowDisclaimer() {
-//        mainActivity = rule.activity
         `when`(mockSharedPrefsClient.getUsername(anyString())).thenReturn(null)
-        run { mainActivity.loadInitialView() }
+        rule.runOnUiThread { run { mainActivity.loadInitialView() } }
         onView(withId(R.id.adView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
         onView(withId(R.id.home_menu)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
     }
@@ -79,7 +72,6 @@ class MainActivityTest {
     @Test
     @Throws(Throwable::class)
     fun testShowMyOddsFragment() {
-//        rule.runOnUiThread { run { mainActivity.loadInitialView() } }
         onView(withId(R.id.myOdds)).check(matches(isClickable())).perform(click())
         verify(mockFragmentFactory).getMyOddsFragment()
     }
@@ -87,7 +79,6 @@ class MainActivityTest {
     @Test
     @Throws(Throwable::class)
     fun testShowCreateOddsFragment() {
-//        rule.runOnUiThread { run { mainActivity.loadInitialView() } }
         onView(withId(R.id.createOdds)).check(matches(isClickable())).perform(click())
         verify(mockFragmentFactory).getCreateOddsFragment()
     }
@@ -95,7 +86,6 @@ class MainActivityTest {
     @Test
     @Throws(Throwable::class)
     fun testShowFavoriteOddsFragment() {
-//        rule.runOnUiThread { run { mainActivity.loadInitialView() } }
         onView(withId(R.id.favOdds)).check(matches(isClickable())).perform(click())
         verify(mockFragmentFactory).getFavoriteOddsFragment()
     }
@@ -103,7 +93,7 @@ class MainActivityTest {
     @Test
     @Throws(Throwable::class)
     fun testOnUserNameSaved() {
-//        rule.runOnUiThread { run { mainActivity.onUsernameSaved() } }
+        rule.runOnUiThread { run { mainActivity.onUsernameSaved() } }
         onView(withId(R.id.adView)).check(matches(isDisplayed()))
         onView(withId(R.id.home_menu)).check(matches(isDisplayed()))
 
@@ -111,6 +101,6 @@ class MainActivityTest {
 
     @After
     fun tearDown() {
-//        mainActivity = null
+        rule.finishActivity()
     }
 }

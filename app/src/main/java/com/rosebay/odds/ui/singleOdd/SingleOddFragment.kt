@@ -14,16 +14,13 @@ import android.widget.*
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
-import com.rosebay.odds.util.Constants
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.R
 import com.rosebay.odds.model.SingleOdd
-import com.rosebay.odds.util.Mockable
-import com.rosebay.odds.util.SharedPreferencesClient
+import com.rosebay.odds.util.Constants
 import com.squareup.picasso.Picasso
 import easymvp.annotation.FragmentView
 import easymvp.annotation.Presenter
-import javax.inject.Inject
 
 @FragmentView(presenter = SingleOddPresenterImpl::class)
 class SingleOddFragment : Fragment(), SingleOddView {

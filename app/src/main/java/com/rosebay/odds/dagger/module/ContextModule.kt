@@ -8,9 +8,9 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class ContextModule(private val context: Context) {
+open class ContextModule(private val context: Context) {
 
     @Provides
     @OddsApplicationScope
-    fun providesContext(): Context = context
+    open fun providesContext(): Context = context
 }
