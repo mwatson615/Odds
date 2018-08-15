@@ -22,6 +22,8 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import easymvp.annotation.FragmentView;

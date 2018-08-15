@@ -22,9 +22,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
-import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import java.util.*
@@ -40,7 +38,7 @@ class MainOddsFragmentTest {
     lateinit var targetContext: Context
 
     @get:Rule
-    var rule = ActivityTestRule(SingleFragmentTestActivity::class.java, false, true)
+    var rule = ActivityTestRule(SingleFragmentTestActivity::class.java)
 
     @Before
     @Throws(Throwable::class)
@@ -49,9 +47,15 @@ class MainOddsFragmentTest {
         targetContext = InstrumentationRegistry.getTargetContext()
         singleOddList = createTestOdd()
         fragment = MainOddsFragment()
-        fragment.mainOddsPresenter = mockPresenter
         rule.activity.setFragment(fragment)
-        mockPresenter.onViewAttached(fragment)
+        fragment.mainOddsPresenter = mockPresenter
+        run { fragment.onResume() }
+    }
+
+    @Test
+    fun testInit() {
+        verify(mockPresenter).onViewAttached(fragment)
+        verify(mockPresenter).fetchOdds()
     }
 
     @Test
@@ -94,9 +98,10 @@ class MainOddsFragmentTest {
         onView(withId(R.id.searchView)).check(matches(hasFocus()))
         onView(withId(R.id.searchView)).perform(click())
         onView(isAssignableFrom(AutoCompleteTextView::class.java)).perform(typeText("Search"))
+        fragment.mainOddsPresenter = mockPresenter
         onView(withId(R.id.beginSearchButton)).check(matches(isClickable())).perform(click())
         onView(withId(R.id.searchView)).check(matches(not<View>(hasFocus())))
-        verify<MainOddsPresenterImpl>(mockPresenter).fetchSearchResults(anyString())
+        verify<MainOddsPresenterImpl>(mockPresenter).fetchSearchResults("Search")
     }
 
     @Test
@@ -105,13 +110,13 @@ class MainOddsFragmentTest {
         rule.runOnUiThread { run { fragment.showBackButtonOnSearchResults() } }
         onView(withId(R.id.backToMainButton)).check(matches(isDisplayed())).perform(click())
         onView(withId(R.id.searchView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
-        verify<MainOddsPresenterImpl>(mockPresenter, times(2)).fetchOdds()
+        verify<MainOddsPresenterImpl>(mockPresenter).fetchOdds()
     }
 
     @Test
     @Throws(Throwable::class)
     fun testOnItemClicked() {
-        rule.runOnUiThread { run { fragment.onItemClicked(singleOddList[0]) } }
+        run { fragment.onItemClicked(singleOddList[0]) }
         verify<MainOddsPresenterImpl>(mockPresenter).fetchSingleOdd(singleOddList[0].postId)
     }
 
@@ -141,7 +146,6 @@ class MainOddsFragmentTest {
 
     @After
     fun tearDown() {
-        fragment.onDestroy()
         rule.finishActivity()
     }
 

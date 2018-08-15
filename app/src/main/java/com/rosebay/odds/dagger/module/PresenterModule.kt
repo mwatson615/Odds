@@ -1,15 +1,10 @@
 package com.rosebay.odds.dagger.module
 
 import com.rosebay.odds.dagger.component.OddsApplicationScope
-import com.rosebay.odds.ui.createOdds.CreateOddsPresenter
 import com.rosebay.odds.ui.createOdds.CreateOddsPresenterImpl
-import com.rosebay.odds.ui.disclaimer.DisclaimerPresenter
 import com.rosebay.odds.ui.disclaimer.DisclaimerPresenterImpl
-import com.rosebay.odds.ui.favoriteOdds.FavoriteOddsPresenter
 import com.rosebay.odds.ui.favoriteOdds.FavoriteOddsPresenterImpl
-import com.rosebay.odds.ui.mainOdds.MainOddsPresenter
 import com.rosebay.odds.ui.mainOdds.MainOddsPresenterImpl
-import com.rosebay.odds.ui.myOdds.MyOddsPresenter
 import com.rosebay.odds.ui.myOdds.MyOddsPresenterImpl
 import dagger.Module
 import dagger.Provides
@@ -19,31 +14,31 @@ class PresenterModule {
 
     @Provides
     @OddsApplicationScope
-    fun provideMainOddsPresenter() : MainOddsPresenter {
+    fun provideMainOddsPresenter() : MainOddsPresenterImpl {
         return MainOddsPresenterImpl()
     }
 
     @Provides
     @OddsApplicationScope
-    fun provideDisclaimerPresenter() : DisclaimerPresenter {
+    fun provideDisclaimerPresenter() : DisclaimerPresenterImpl {
         return DisclaimerPresenterImpl()
     }
 
     @Provides
     @OddsApplicationScope
-    fun provideMyOddsPresenter() : MyOddsPresenter {
+    fun provideMyOddsPresenter() : MyOddsPresenterImpl {
         return MyOddsPresenterImpl()
     }
 
     @Provides
     @OddsApplicationScope
-    fun provideFavoriteOddsPresenter() : FavoriteOddsPresenter {
+    fun provideFavoriteOddsPresenter() : FavoriteOddsPresenterImpl {
         return FavoriteOddsPresenterImpl()
     }
 
     @Provides
     @OddsApplicationScope
-    fun provideCreateOddsPresenter() : CreateOddsPresenter {
+    fun provideCreateOddsPresenter() : CreateOddsPresenterImpl {
         return CreateOddsPresenterImpl()
     }
 }

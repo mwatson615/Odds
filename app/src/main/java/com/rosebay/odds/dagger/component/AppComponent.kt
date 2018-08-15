@@ -1,13 +1,11 @@
 package com.rosebay.odds.dagger.component
 
-import com.rosebay.odds.dagger.module.ClientModule
-import com.rosebay.odds.dagger.module.NetworkModule
-import com.rosebay.odds.dagger.module.RoomModule
-import com.rosebay.odds.dagger.module.UIModule
+import com.rosebay.odds.dagger.module.*
 import com.rosebay.odds.ui.createOdds.CreateOddsFragment
 import com.rosebay.odds.ui.createOdds.CreateOddsPresenterImpl
 import com.rosebay.odds.ui.disclaimer.DisclaimerFragment
 import com.rosebay.odds.ui.disclaimer.DisclaimerPresenterImpl
+import com.rosebay.odds.ui.favoriteOdds.FavoriteOddsFragment
 import com.rosebay.odds.ui.favoriteOdds.FavoriteOddsPresenterImpl
 import com.rosebay.odds.ui.mainOdds.MainActivity
 import com.rosebay.odds.ui.mainOdds.MainOddsFragment
@@ -19,7 +17,7 @@ import com.rosebay.odds.ui.singleOdd.SingleOddPresenterImpl
 import dagger.Component
 
 @OddsApplicationScope
-@Component(modules = arrayOf(ClientModule::class, RoomModule::class, NetworkModule::class, UIModule::class))
+@Component(modules = arrayOf(ClientModule::class, RoomModule::class, NetworkModule::class, UIModule::class, PresenterModule::class))
 interface AppComponent {
 
     fun inject(createOddsPresenterImpl: CreateOddsPresenterImpl)
@@ -41,6 +39,8 @@ interface AppComponent {
     fun inject(disclaimerFragment: DisclaimerFragment)
 
     fun inject(singleOddFragment: SingleOddFragment)
+
+    fun inject(favoriteOddsFragment: FavoriteOddsFragment)
 
     fun inject(myOddsFragment: MyOddsFragment)
 

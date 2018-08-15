@@ -50,12 +50,17 @@ class FavoriteOddsFragmentTest {
     }
 
     @Test
-    @Throws(Throwable::class)
     fun testInit() {
+        verify<FavoriteOddsPresenterImpl>(mockPresenter).getAllFavorites()
+        verify(mockPresenter).onViewAttached(fragment)
+    }
+
+    @Test
+    @Throws(Throwable::class)
+    fun testInitialLayout() {
         onView(withId(R.id.favoritesProgressBar)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
         onView(withId(R.id.favoritesRecyclerView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
         onView(withId(R.id.noFavoriteOddsTextView)).check(matches(isDisplayed()))
-        verify<FavoriteOddsPresenterImpl>(mockPresenter).getAllFavorites()
     }
 
     @Test

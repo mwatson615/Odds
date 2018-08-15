@@ -23,6 +23,8 @@ import com.squareup.leakcanary.RefWatcher;
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -32,6 +34,7 @@ import easymvp.annotation.Presenter;
 @FragmentView(presenter = MainOddsPresenterImpl.class)
 public class MainOddsFragment extends Fragment implements MainOddsView, MainOddsAdapter.ClickListener {
 
+    @Inject
     @Presenter
     public MainOddsPresenterImpl mainOddsPresenter;
 
@@ -67,6 +70,7 @@ public class MainOddsFragment extends Fragment implements MainOddsView, MainOdds
         View root = inflater.inflate(R.layout.fragment_main_odds,
                 container, false);
         ButterKnife.bind(this, root);
+        OddsApplication.appComponent.inject(this);
         showInitialToolbarLayout();
         return root;
     }
@@ -81,6 +85,7 @@ public class MainOddsFragment extends Fragment implements MainOddsView, MainOdds
     @Override
     public void onResume() {
         super.onResume();
+        mainOddsPresenter.onViewAttached(this);
         mainOddsPresenter.fetchOdds();
     }
 

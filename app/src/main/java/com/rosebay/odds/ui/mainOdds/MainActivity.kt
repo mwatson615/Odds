@@ -26,7 +26,7 @@ import com.rosebay.odds.util.SharedPreferencesClient
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity(), OnUsernameSavedInterface, CreateSingleOddInterface {
+class MainActivity : AppCompatActivity(), CreateSingleOddInterface, OnUsernameSavedInterface {
 
     @Inject
     lateinit var usernamePreferencesClient: SharedPreferencesClient
@@ -114,18 +114,17 @@ class MainActivity : AppCompatActivity(), OnUsernameSavedInterface, CreateSingle
     }
 
     companion object {
+
         private lateinit var supportFragmentManager : FragmentManager
         fun setManager(fragmentManager: FragmentManager) {
             supportFragmentManager = fragmentManager
         }
+
         fun create(fragment: Fragment) {
-            if (fragment is MainOddsFragment) supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            if (fragment is com.rosebay.odds.ui.mainOdds.MainOddsFragment) supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
             val transaction = supportFragmentManager.beginTransaction().addToBackStack(null)
             transaction.replace(R.id.fragment_container, fragment)
             transaction.commit()
-        }
-        fun newInstance() : MainActivity {
-            return MainActivity()
         }
     }
 
