@@ -15,6 +15,7 @@ import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.ui.favoriteOdds.FavoriteOddsFragment
 import com.rosebay.odds.ui.favoriteOdds.FavoriteOddsPresenterImpl
 import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.junit.After
@@ -24,6 +25,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import java.util.*
@@ -47,6 +49,8 @@ class FavoriteOddsFragmentTest {
         testList = createTestList()
         fragment.favoriteOddsPresenter = mockPresenter
         rule.activity.setFragment(fragment)
+        fragment.favoriteOddsPresenter = mockPresenter
+        run {fragment.onResume()}
     }
 
     @Test
@@ -56,11 +60,17 @@ class FavoriteOddsFragmentTest {
     }
 
     @Test
+    fun testOnPause() {
+        run { fragment.onPause() }
+        verify(mockPresenter).onViewDetached()
+    }
+
+    @Test
     @Throws(Throwable::class)
     fun testInitialLayout() {
-        onView(withId(R.id.favoritesProgressBar)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
-        onView(withId(R.id.favoritesRecyclerView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
-        onView(withId(R.id.noFavoriteOddsTextView)).check(matches(isDisplayed()))
+        onView(withId(R.id.favoritesProgressBar)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.favoritesRecyclerView)).check(matches(not(isDisplayed())))
+//        onView(withId(R.id.noFavoriteOddsTextView)).check(matches(not(isDisplayed())))
     }
 
     @Test
