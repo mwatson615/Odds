@@ -11,19 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
-
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.R
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.util.Mockable
-import com.squareup.leakcanary.RefWatcher
-
-import javax.inject.Inject
-
-import butterknife.BindView
-import butterknife.ButterKnife
 import easymvp.annotation.FragmentView
 import easymvp.annotation.Presenter
+import javax.inject.Inject
 
 @Mockable
 @FragmentView(presenter = FavoriteOddsPresenterImpl::class)
