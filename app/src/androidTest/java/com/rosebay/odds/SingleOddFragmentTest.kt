@@ -39,7 +39,7 @@ class SingleOddFragmentTest {
     private
     lateinit var fragment: SingleOddFragment
     private lateinit var singleOdd: SingleOdd
-    private var targetContext: Context? = null
+    private lateinit var targetContext: Context
     private lateinit var username : String
 
     @get:Rule

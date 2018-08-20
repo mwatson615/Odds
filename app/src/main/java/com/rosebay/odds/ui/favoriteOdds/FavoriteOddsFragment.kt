@@ -1,5 +1,6 @@
 package com.rosebay.odds.ui.favoriteOdds
 
+import android.content.Context
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.Snackbar
@@ -43,7 +44,6 @@ class FavoriteOddsFragment : Fragment(), FavoriteOddsView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_favorite_odds, container, false)
         ButterKnife.bind(this, root)
-        OddsApplication.appComponent.inject(this)
         return root
     }
 
@@ -54,6 +54,11 @@ class FavoriteOddsFragment : Fragment(), FavoriteOddsView {
         mFavoritesRecyclerView.visibility = View.INVISIBLE
         mFavoritesRecyclerView.setHasFixedSize(true)
         mFavoritesRecyclerView.layoutManager = LinearLayoutManager(activity)
+    }
+
+    override fun onAttach(context: Context?) {
+        OddsApplication.appComponent.inject(this)
+        super.onAttach(context)
     }
 
     override fun onLoading() {

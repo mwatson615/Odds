@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseReference
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.util.Constants
+import com.rosebay.odds.util.EmptyResponseException
 import durdinapps.rxfirebase2.RxFirebaseQuery
 import easymvp.AbstractPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,7 +15,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
-open class MyOddsPresenterImpl : AbstractPresenter<MyOddsView>(), MyOddsPresenter {
+open class MyOddsPresenterImpl @Inject constructor() : AbstractPresenter<MyOddsView>(), MyOddsPresenter {
 
     @Inject
     lateinit var databaseReference: DatabaseReference
@@ -32,19 +33,27 @@ open class MyOddsPresenterImpl : AbstractPresenter<MyOddsView>(), MyOddsPresente
         RxFirebaseQuery.getInstance()
                 .filterByRefs(reference, query)
                 .asList()
-                .doOnError { view!!.onError() }
+                .map { it ->
+                    if (it.isEmpty()) {
+                        throw EmptyResponseException()
+                    } else {
+                        it
+                    }
+                }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { response ->
+                .subscribe( { response ->
                     for (snapshot in response) {
                         myOdds.add(snapshot.getValue(SingleOdd::class.java)!!)
                     }
-                    if (myOdds.size == 0) {
+                }, {
+                  e ->
+                    if (e is EmptyResponseException) {
                         view?.onNoResponse()
                     } else {
-                        view?.onResponse(myOdds)
+                        view!!.onError()
                     }
-                }
+                })
     }
 
     override fun onViewAttached(view: MyOddsView) {

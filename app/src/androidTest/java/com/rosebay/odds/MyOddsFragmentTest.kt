@@ -1,5 +1,6 @@
 package com.rosebay.odds
 
+import Resources.espressoDaggerMockRule
 import android.content.Context
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso.onView
@@ -16,6 +17,7 @@ import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.ui.myOdds.MyOddsFragment
 import com.rosebay.odds.ui.myOdds.MyOddsPresenterImpl
 import com.rosebay.odds.util.SharedPreferencesClient
+import junit.framework.Assert.assertEquals
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -37,45 +39,63 @@ import java.util.*
 class MyOddsFragmentTest {
 
     @Mock
-    private
     lateinit var mockPresenter: MyOddsPresenterImpl
     @Mock
     private
     lateinit var mockPrefClient : SharedPreferencesClient
     @InjectMocks
-    private
     lateinit var fragment: MyOddsFragment
+
     private lateinit var testListMyOdds: List<SingleOdd>
     private lateinit var context : Context
+    private lateinit var appContext: Context
     private lateinit var username : String
 
     @get:Rule
-    var rule = ActivityTestRule(SingleFragmentTestActivity::class.java)
+    val daggerRule = espressoDaggerMockRule()
+
+    @get:Rule
+    val rule = ActivityTestRule(SingleFragmentTestActivity::class.java, false, false)
 
     @Before
     @Throws(Throwable::class)
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         context = InstrumentationRegistry.getTargetContext()
+        appContext = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
         testListMyOdds = createTestList()
-        fragment.myOddsPresenter = mockPresenter
+        rule.launchActivity(null)
         rule.activity.setFragment(fragment)
+        fragment.onAttach(rule.activity as Context)
+        fragment.myOddsPresenter = mockPresenter
         username = context.resources.getString(R.string.username)
-        mockPresenter.onViewAttached(fragment)
         `when`(mockPrefClient.getUsername(any())).thenReturn(username)
     }
 
     @Test
     @Throws(Throwable::class)
     fun testInitialFetch() {
+        assertEquals(mockPresenter, fragment.myOddsPresenter)
+        onView(withId(R.id.myOddsRecyclerView)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
+        onView(withId(R.id.noMyOddsTextView)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
+        onView(withId(R.id.myOddsProgressBar)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
         onView(withId(R.id.fragmentMyOdds)).check(matches(isDisplayed()))
+        verify<MyOddsPresenterImpl>(mockPresenter).onViewAttached(fragment)
         verify<MyOddsPresenterImpl>(mockPresenter).fetchMyOdds(anyString())
+    }
+
+    @Test
+    fun testOnLoading() {
+        rule.runOnUiThread { run { fragment.onLoading() } }
+        onView(withId(R.id.myOddsProgressBar)).check(matches(isDisplayed()))
+        onView(withId(R.id.myOddsRecyclerView)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
+        onView(withId(R.id.noMyOddsTextView)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
     }
 
     @Test
     @Throws(Throwable::class)
     fun testOnPause() {
-        rule.runOnUiThread { run { fragment.onPause() } }
+     rule.runOnUiThread { run { fragment.onPause() } }
         verify<MyOddsPresenterImpl>(mockPresenter).onViewDetached()
     }
 
@@ -115,6 +135,7 @@ class MyOddsFragmentTest {
 
     @After
     fun tearDown() {
+        fragment.onDetach()
         rule.finishActivity()
     }
 

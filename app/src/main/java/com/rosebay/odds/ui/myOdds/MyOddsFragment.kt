@@ -24,6 +24,7 @@ import javax.inject.Inject
 @FragmentView(presenter = MyOddsPresenterImpl::class)
 open class MyOddsFragment : Fragment(), MyOddsView {
 
+    @Inject
     @Presenter
     lateinit var myOddsPresenter: MyOddsPresenterImpl
 
@@ -47,15 +48,18 @@ open class MyOddsFragment : Fragment(), MyOddsView {
         return root
     }
 
-    override fun onAttach(context: Context) {
-        OddsApplication.appComponent.inject(this)
-        super.onAttach(context)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        myOddsRecyclerView.visibility = View.INVISIBLE
+        mNoMyOddsTextView.visibility = View.INVISIBLE
+        mProgressBar.visibility = View.INVISIBLE
         myOddsRecyclerView.setHasFixedSize(true)
         myOddsRecyclerView.layoutManager = LinearLayoutManager(activity)
+    }
+
+    override fun onAttach(context: Context?) {
+        OddsApplication.appComponent.inject(this)
+        super.onAttach(context)
     }
 
     override fun onResponse(response: List<SingleOdd>) {
@@ -75,6 +79,7 @@ open class MyOddsFragment : Fragment(), MyOddsView {
 
     override fun onResume() {
         super.onResume()
+        myOddsPresenter.onViewAttached(this)
         val username = if (preferencesClient.getUsername(resources.getString(R.string.username)) != null)
             preferencesClient.getUsername(resources.getString(R.string.username)) else ""
         myOddsPresenter.fetchMyOdds(username)

@@ -3,7 +3,6 @@ package com.rosebay.odds
 
 import android.app.Application
 import android.content.Context
-import android.support.annotation.VisibleForTesting
 import com.rosebay.odds.dagger.component.AppComponent
 import com.rosebay.odds.dagger.component.DaggerAppComponent
 import com.rosebay.odds.dagger.module.ContextModule
@@ -27,9 +26,12 @@ class OddsApplication : Application() {
         plantTimber()
     }
 
-    @VisibleForTesting
     fun setComponent(component: AppComponent) {
         appComponent = component
+    }
+
+    fun getComponent() : AppComponent {
+        return appComponent
     }
 
     private fun plantTimber() {
