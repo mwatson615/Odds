@@ -21,10 +21,12 @@ import com.rosebay.odds.util.Constants
 import com.squareup.picasso.Picasso
 import easymvp.annotation.FragmentView
 import easymvp.annotation.Presenter
+import javax.inject.Inject
 
 @FragmentView(presenter = SingleOddPresenterImpl::class)
 class SingleOddFragment : Fragment(), SingleOddView {
 
+    @Inject
     @Presenter
     lateinit var singleOddPresenter: SingleOddPresenterImpl
 
