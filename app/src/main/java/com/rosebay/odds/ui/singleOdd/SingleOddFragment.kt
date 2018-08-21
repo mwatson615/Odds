@@ -69,6 +69,7 @@ class SingleOddFragment : Fragment(), SingleOddView {
 
     override fun onResume() {
         super.onResume()
+        singleOddPresenter.onViewAttached(this)
         singleOddPresenter.checkForFavorite(mSingleOdd.postId)
         singleOddPresenter.checkIfVoted(mSingleOdd.postId)
         singleOddPresenter.loadOddsData(mSingleOdd)

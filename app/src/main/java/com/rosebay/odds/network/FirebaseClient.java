@@ -1,6 +1,7 @@
 package com.rosebay.odds.network;
 
 import com.rosebay.odds.model.SingleOdd;
+import com.rosebay.odds.util.EmptyResponseException;
 
 import io.reactivex.Completable;
 import io.reactivex.Maybe;

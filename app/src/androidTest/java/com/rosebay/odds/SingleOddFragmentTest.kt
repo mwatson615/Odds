@@ -1,5 +1,6 @@
 package com.rosebay.odds
 
+import Resources.espressoDaggerMockRule
 import android.content.Context
 import android.os.Bundle
 import android.support.test.InstrumentationRegistry
@@ -43,7 +44,10 @@ class SingleOddFragmentTest {
     private lateinit var username : String
 
     @get:Rule
-    var rule = ActivityTestRule(SingleFragmentTestActivity::class.java)
+    val daggerRule = espressoDaggerMockRule()
+
+    @get:Rule
+    var rule = ActivityTestRule(SingleFragmentTestActivity::class.java, false, false)
 
     @Before
     @Throws(Throwable::class)
@@ -53,7 +57,10 @@ class SingleOddFragmentTest {
         fragment.arguments = createTestSingleOdd()
         singleOdd = fragment.arguments!!.getSerializable(Constants.SINGLE_ODD_KEY) as SingleOdd
         username = fragment.arguments!!.getString(Constants.USERNAME)
+        rule.launchActivity(null)
         rule.activity.setFragment(fragment)
+        fragment.onAttach(rule.activity as Context)
+        fragment.singleOddPresenter = mockPresenter
     }
 
     @Test
@@ -151,7 +158,7 @@ class SingleOddFragmentTest {
     fun testAddToFavorites() {
         rule.runOnUiThread { run { fragment.enableFavoritesButton() } }
         onView(withId(R.id.addToFavoritesButton)).check(matches(isEnabled())).check(matches(isClickable())).perform(click())
-        verify<SingleOddPresenterImpl>(mockPresenter).addToFavorites(targetContext!!.resources.getString(R.string.username), singleOdd.postId)
+        verify<SingleOddPresenterImpl>(mockPresenter).addToFavorites(targetContext.resources.getString(R.string.username), singleOdd.postId)
     }
 
     @Test

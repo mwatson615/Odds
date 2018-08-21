@@ -51,7 +51,7 @@ open class MyOddsPresenterImpl @Inject constructor() : AbstractPresenter<MyOddsV
                     if (e is EmptyResponseException) {
                         view?.onNoResponse()
                     } else {
-                        view!!.onError()
+                        view?.onError()
                     }
                 })
     }

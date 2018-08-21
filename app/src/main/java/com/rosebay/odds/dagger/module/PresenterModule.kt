@@ -6,6 +6,7 @@ import com.rosebay.odds.ui.disclaimer.DisclaimerPresenterImpl
 import com.rosebay.odds.ui.favoriteOdds.FavoriteOddsPresenterImpl
 import com.rosebay.odds.ui.mainOdds.MainOddsPresenterImpl
 import com.rosebay.odds.ui.myOdds.MyOddsPresenterImpl
+import com.rosebay.odds.ui.singleOdd.SingleOddPresenterImpl
 import dagger.Module
 import dagger.Provides
 
@@ -40,5 +41,11 @@ open class PresenterModule {
     @OddsApplicationScope
     fun provideCreateOddsPresenter() : CreateOddsPresenterImpl {
         return CreateOddsPresenterImpl()
+    }
+
+    @Provides
+    @OddsApplicationScope
+    fun providesSingleOddsPresenter() : SingleOddPresenterImpl {
+        return SingleOddPresenterImpl()
     }
 }

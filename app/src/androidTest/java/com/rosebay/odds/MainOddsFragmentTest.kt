@@ -1,5 +1,6 @@
 package com.rosebay.odds
 
+import Resources.espressoDaggerMockRule
 import android.content.Context
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso.onView
@@ -22,7 +23,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import java.util.*
@@ -32,13 +35,16 @@ class MainOddsFragmentTest {
 
     @Mock
     lateinit var mockPresenter: MainOddsPresenterImpl
-
+    @InjectMocks
     lateinit var fragment: MainOddsFragment
     private lateinit var singleOddList: List<SingleOdd>
     lateinit var targetContext: Context
 
     @get:Rule
-    var rule = ActivityTestRule(SingleFragmentTestActivity::class.java)
+    val daggerRule = espressoDaggerMockRule()
+
+    @get:Rule
+    var rule = ActivityTestRule(SingleFragmentTestActivity::class.java, false, false)
 
     @Before
     @Throws(Throwable::class)
@@ -46,16 +52,17 @@ class MainOddsFragmentTest {
         MockitoAnnotations.initMocks(this)
         targetContext = InstrumentationRegistry.getTargetContext()
         singleOddList = createTestOdd()
-        fragment = MainOddsFragment()
+        rule.launchActivity(null)
         rule.activity.setFragment(fragment)
+        fragment.onAttach(rule.activity as Context)
         fragment.mainOddsPresenter = mockPresenter
-        run { fragment.onResume() }
     }
 
     @Test
     fun testInit() {
-        verify(mockPresenter).onViewAttached(fragment)
-        verify(mockPresenter).fetchOdds()
+        run { fragment.onResume() }
+        verify<MainOddsPresenterImpl>(mockPresenter).onViewAttached(fragment)
+        verify<MainOddsPresenterImpl>(mockPresenter).fetchOdds()
     }
 
     @Test
@@ -98,7 +105,6 @@ class MainOddsFragmentTest {
         onView(withId(R.id.searchView)).check(matches(hasFocus()))
         onView(withId(R.id.searchView)).perform(click())
         onView(isAssignableFrom(AutoCompleteTextView::class.java)).perform(typeText("Search"))
-        fragment.mainOddsPresenter = mockPresenter
         onView(withId(R.id.beginSearchButton)).check(matches(isClickable())).perform(click())
         onView(withId(R.id.searchView)).check(matches(not<View>(hasFocus())))
         verify<MainOddsPresenterImpl>(mockPresenter).fetchSearchResults("Search")
@@ -110,7 +116,7 @@ class MainOddsFragmentTest {
         rule.runOnUiThread { run { fragment.showBackButtonOnSearchResults() } }
         onView(withId(R.id.backToMainButton)).check(matches(isDisplayed())).perform(click())
         onView(withId(R.id.searchView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
-        verify<MainOddsPresenterImpl>(mockPresenter).fetchOdds()
+        verify<MainOddsPresenterImpl>(mockPresenter, times(2)).fetchOdds()
     }
 
     @Test

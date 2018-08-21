@@ -1,14 +1,18 @@
 package com.rosebay.odds.ui.favoriteOdds
 
 import android.support.annotation.VisibleForTesting
+import android.util.Log
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.localStorage.FavoriteDao
 import com.rosebay.odds.model.Favorite
 import com.rosebay.odds.network.FirebaseClient
+import com.rosebay.odds.util.EmptyResponseException
 import easymvp.AbstractPresenter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.exceptions.CompositeException
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 open class FavoriteOddsPresenterImpl @Inject constructor() : AbstractPresenter<FavoriteOddsView>(), FavoriteOddsPresenter {
@@ -27,31 +31,33 @@ open class FavoriteOddsPresenterImpl @Inject constructor() : AbstractPresenter<F
         Observable.fromCallable { favoriteDao.userFavorites }
                 .map { it ->
                     if (it.isEmpty()) {
-                        throw Throwable()
+                        throw EmptyResponseException()
                     } else {
                         it
                     }
                 }
                 .flatMapIterable<Favorite> { items -> items}
-                .map { it.postId }
-
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe( { result -> fetchFromFirebase(result) }
-                ) { view?.noFavorites() }
-    }
-
-    fun fetchFromFirebase(post: String) {
-        view?.onLoading()
-        firebaseClient.fetchSingleOdd(post)
-                .map { item -> item }
-                .toObservable()
+                .map { it -> firebaseClient.fetchSingleOdd(it.postId) }
+                .flatMap { item -> item.toObservable() }
                 .toList()
-                .doOnError { view?.onError() }
-                .doOnSuccess { it ->  view?.setData(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+                .subscribe( { result -> view?.setData(result) },
+                    { e ->
+                        when (e) {
+                            is EmptyResponseException -> {
+                                view?.noFavorites()
+                            }
+                            is CompositeException -> for (exception in e.exceptions) {
+                                if (exception is EmptyResponseException) {
+                                    view?.noFavorites()
+                                }
+                            }
+                            else ->  {
+                                view?.onError()
+                            }
+                        }
+                    })
     }
 
     override fun onViewAttached(view: FavoriteOddsView) {
