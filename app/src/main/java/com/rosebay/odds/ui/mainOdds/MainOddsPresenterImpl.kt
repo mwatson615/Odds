@@ -25,7 +25,7 @@ open class MainOddsPresenterImpl : AbstractPresenter<MainOddsView>(), MainOddsPr
     @Inject
     lateinit var firebaseClient: FirebaseClient
     @VisibleForTesting
-    lateinit var viewInterface: MainOddsView
+    public var viewInterface: MainOddsView? = null
 
     @SuppressLint("CheckResult")
     override fun fetchOdds() {

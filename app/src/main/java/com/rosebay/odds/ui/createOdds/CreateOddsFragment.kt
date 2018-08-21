@@ -30,8 +30,9 @@ import javax.inject.Inject
 @FragmentView(presenter = CreateOddsPresenterImpl::class)
 open class CreateOddsFragment : Fragment(), CreateOddsView, DatePickerDialog.OnDateSetListener {
 
+    @Inject
     @Presenter
-    var createOddsPresenter: CreateOddsPresenterImpl? = null
+    lateinit var createOddsPresenter: CreateOddsPresenterImpl
 
     @Inject
     lateinit var sharedPreferencesClient: SharedPreferencesClient
@@ -157,7 +158,7 @@ open class CreateOddsFragment : Fragment(), CreateOddsView, DatePickerDialog.OnD
 
     @OnClick(R.id.searchButton)
     fun searchForImages() {
-        createOddsPresenter!!.getImages(mDescriptionEditText.text.toString(), mImageSearchTermsEditText.text.toString())
+        createOddsPresenter.getImages(mDescriptionEditText.text.toString(), mImageSearchTermsEditText.text.toString())
     }
 
     @OnClick(R.id.looksGoodButton)
@@ -203,7 +204,7 @@ open class CreateOddsFragment : Fragment(), CreateOddsView, DatePickerDialog.OnD
 
     @OnClick(R.id.createOddsButton)
     fun submitNewOdd() {
-        createOddsPresenter!!.createOdds(createNewOdd())
+        createOddsPresenter.createOdds(createNewOdd())
     }
 
     private fun createNewOdd(): SingleOdd {
@@ -260,12 +261,12 @@ open class CreateOddsFragment : Fragment(), CreateOddsView, DatePickerDialog.OnD
 
     override fun onPause() {
         super.onPause()
-        createOddsPresenter?.onViewDetached()
+        createOddsPresenter.onViewDetached()
     }
 
     override fun onResume() {
         super.onResume()
-        createOddsPresenter?.onViewAttached(this)
+        createOddsPresenter.onViewAttached(this)
     }
 
     override fun onDestroy() {

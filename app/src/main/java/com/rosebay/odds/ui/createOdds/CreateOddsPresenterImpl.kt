@@ -3,6 +3,7 @@ package com.rosebay.odds.ui.createOdds
 
 import android.support.annotation.VisibleForTesting
 import com.google.firebase.database.DatabaseReference
+import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.model.ImageItem
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.network.ImageClient
@@ -12,7 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-open class CreateOddsPresenterImpl : AbstractPresenter<CreateOddsView>(), CreateOddsPresenter {
+open class CreateOddsPresenterImpl @Inject constructor() : AbstractPresenter<CreateOddsView>(), CreateOddsPresenter {
 
     @Inject
     lateinit var imageClient: ImageClient
@@ -21,19 +22,19 @@ open class CreateOddsPresenterImpl : AbstractPresenter<CreateOddsView>(), Create
     lateinit var firebaseReference: DatabaseReference
 
     @VisibleForTesting
-    lateinit var createOddsView: CreateOddsView
+    var createOddsView: CreateOddsView? = null
 
     override fun createOdds(singleOdd: SingleOdd) {
         singleOdd.postId = firebaseReference.child(Constants.POSTS).push().key
         firebaseReference.child(Constants.POSTS).child(singleOdd.postId).setValue(singleOdd)
-        view!!.onSave(singleOdd.description)
-        view!!.clearTextFields()
+        view?.onSave(singleOdd.description)
+        view?.clearTextFields()
     }
 
     override fun getImages(description: String, queryTerms: String) {
         view?.onSearch()
         view?.closeKeyboard()
-        val urlResponseSingle = imageClient.fetchImages(description, queryTerms)
+        imageClient.fetchImages(description, queryTerms)
                 .flatMapIterable<ImageItem> { (Iterable<ImageItem>{it.items.listIterator()})}
                 .filter { item -> item.link != null }
                 .map<String>{ it.link }
@@ -48,6 +49,7 @@ open class CreateOddsPresenterImpl : AbstractPresenter<CreateOddsView>(), Create
 
     override fun onViewAttached(view: CreateOddsView) {
         super.onViewAttached(view)
+        OddsApplication.appComponent.inject(this)
     }
 
     override fun onViewDetached() {

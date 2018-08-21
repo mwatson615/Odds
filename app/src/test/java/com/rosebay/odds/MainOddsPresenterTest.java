@@ -37,7 +37,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class MainOddsPresenterTest {
 
-
     @Mock
     RxFirebaseQuery mockQuery;
     @Mock
@@ -56,6 +55,7 @@ public class MainOddsPresenterTest {
         MockitoAnnotations.initMocks(this);
         testSingleOdd = createTestSingleOdd();
         testSnapshotList = createSnapshots();
+        presenter.setViewInterface(mockView);
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setIoSchedulerHandler(h -> Schedulers.trampoline());
     }

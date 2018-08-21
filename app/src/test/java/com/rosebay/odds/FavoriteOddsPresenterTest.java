@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -51,6 +52,7 @@ public class FavoriteOddsPresenterTest {
         testSingleOdd = createTestSingleOdd();
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setIoSchedulerHandler(h -> Schedulers.trampoline());
+        when(mockFavoriteDao.getUserFavorites()).thenReturn(testList);
     }
 
     @Test
@@ -60,7 +62,6 @@ public class FavoriteOddsPresenterTest {
 
     @Test
     public void testGetAllFavoritesYes() {
-        when(mockFavoriteDao.getUserFavorites()).thenReturn(testList);
         when(mockFirebaseClient.fetchSingleOdd(testList.get(0).getPostId())).thenReturn(Single.just(testSingleOdd));
         presenter.getAllFavorites();
         verify(mockView).setData(anyList());
@@ -68,7 +69,7 @@ public class FavoriteOddsPresenterTest {
 
     @Test
     public void testGetAllFavoritesNull() {
-        when(mockFavoriteDao.getUserFavorites()).thenReturn(null);
+        when(mockFavoriteDao.getUserFavorites()).thenReturn(Collections.emptyList());
         presenter.getAllFavorites();
         verify(mockView).noFavorites();
     }
@@ -76,15 +77,14 @@ public class FavoriteOddsPresenterTest {
     @Test
     public void testFetchFromFirebase() {
         when(mockFirebaseClient.fetchSingleOdd(anyString())).thenReturn(Single.just(testSingleOdd));
-        presenter.fetchFromFirebase("post");
-        verify(mockView).onLoading();
+        presenter.getAllFavorites();
         verify(mockView).setData(anyList());
     }
 
     @Test(expected = Exception.class)
     public void testFetchFromFirebaseError() {
         when(mockFirebaseClient.fetchSingleOdd(anyString())).thenThrow(new Exception());
-        presenter.fetchFromFirebase("post");
+        presenter.getAllFavorites();
         verify(mockView).onError();
     }
 

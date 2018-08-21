@@ -2,7 +2,7 @@ package com.rosebay.odds.ui.disclaimer;
 
 public interface DisclaimerView {
 
-    void onUsernameAvailable(String username);
+    void onUsernameAvailable();
 
     void onUsernameTaken();
 

@@ -19,7 +19,7 @@ import java.util.*
 import javax.inject.Inject
 
 
-open class SingleOddPresenterImpl : AbstractPresenter<SingleOddView>(), SingleOddPresenter {
+open class SingleOddPresenterImpl @Inject constructor() : AbstractPresenter<SingleOddView>(), SingleOddPresenter {
 
     @Inject
     lateinit var cloudFunctionsClient: CloudFunctionsClient
@@ -31,7 +31,7 @@ open class SingleOddPresenterImpl : AbstractPresenter<SingleOddView>(), SingleOd
     lateinit var voteDao: VoteDao
 
     @VisibleForTesting
-    lateinit var singleOddView: SingleOddView
+    var singleOddView: SingleOddView? = null
 
     @SuppressLint("CheckResult")
     override fun addToFavorites(username: String, postId: String) {

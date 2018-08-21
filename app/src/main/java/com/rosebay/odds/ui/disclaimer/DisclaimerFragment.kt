@@ -26,8 +26,9 @@ import javax.inject.Inject
 @FragmentView(presenter = DisclaimerPresenterImpl::class)
 open class DisclaimerFragment : Fragment(), DisclaimerView {
 
+    @Inject
     @Presenter
-    var disclaimerPresenter: DisclaimerPresenterImpl? = null
+    lateinit var disclaimerPresenter: DisclaimerPresenterImpl
 
     @Inject
     lateinit var sharedPreferencesClient: SharedPreferencesClient
@@ -41,7 +42,7 @@ open class DisclaimerFragment : Fragment(), DisclaimerView {
     @BindView(R.id.saveUsernameButton)
     lateinit var mSaveButton: Button
 
-    lateinit var mCallback: OnUsernameSavedInterface
+    var mCallback: OnUsernameSavedInterface? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_disclaimer_username, container, false)
@@ -51,22 +52,24 @@ open class DisclaimerFragment : Fragment(), DisclaimerView {
         return root
     }
 
-    override fun onAttach(context: Context) {
+    override fun onAttach(context: Context?) {
         OddsApplication.appComponent.inject(this)
         super.onAttach(context)
+        if (context is OnUsernameSavedInterface)
+            mCallback = context
     }
 
     override fun onResume() {
         super.onResume()
-        disclaimerPresenter?.onViewAttached(this)
+        disclaimerPresenter.onViewAttached(this)
     }
 
     override fun onPause() {
         super.onPause()
-        disclaimerPresenter?.onViewDetached()
+        disclaimerPresenter.onViewDetached()
     }
 
-    override fun onUsernameAvailable(username: String) {
+    override fun onUsernameAvailable() {
         mSearchProgressBar.visibility = View.GONE
         mSaveButton.isEnabled = true
     }
@@ -85,7 +88,7 @@ open class DisclaimerFragment : Fragment(), DisclaimerView {
         mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (!TextUtils.isEmpty(query)) {
-                    disclaimerPresenter?.checkForUsername(mSearchView.query.toString())
+                    disclaimerPresenter.checkForUsername(mSearchView.query.toString())
                     return true
                 }
                 return false
@@ -107,23 +110,29 @@ open class DisclaimerFragment : Fragment(), DisclaimerView {
     override fun onUserSaved(username: String) {
         sharedPreferencesClient.saveUsername(getString(R.string.username), username)
         Snackbar.make(mDisclaimerTextView, String.format(getString(R.string.username_saved_msg), username), Snackbar.LENGTH_SHORT).show()
-        mCallback.onUsernameSaved()
+        mCallback!!.onUsernameSaved()
     }
 
     @OnClick(R.id.disclaimerSearchView)
     fun searchForUsername() {
-        if (mSearchView.query.toString() != "") {
-            disclaimerPresenter?.checkForUsername(mSearchView.query.toString())
+        if (!mSearchView.query.toString().isNullOrEmpty()) {
+            disclaimerPresenter.checkForUsername(mSearchView.query.toString())
         }
     }
 
     @OnClick(R.id.saveUsernameButton)
     fun saveUsername() {
-        disclaimerPresenter?.saveUsername(mSearchView.query.toString())
+        disclaimerPresenter.saveUsername(mSearchView.query.toString())
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        mCallback = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        mCallback = null
         val refWatcher = OddsApplication.getRefWatcher(activity!!)
         refWatcher.watch(this)
     }

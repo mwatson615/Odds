@@ -12,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-open class DisclaimerPresenterImpl : AbstractPresenter<DisclaimerView>(), DisclaimerPresenter {
+open class DisclaimerPresenterImpl @Inject constructor() : AbstractPresenter<DisclaimerView>(), DisclaimerPresenter {
 
     @Inject
     lateinit var firebaseClient: FirebaseClient
@@ -21,7 +21,7 @@ open class DisclaimerPresenterImpl : AbstractPresenter<DisclaimerView>(), Discla
     lateinit var databaseReference: DatabaseReference
 
     @VisibleForTesting
-    lateinit var disclaimerView: DisclaimerView
+    var disclaimerView: DisclaimerView? = null
 
     @SuppressLint("CheckResult")
     override fun checkForUsername(username: String) {
@@ -31,7 +31,7 @@ open class DisclaimerPresenterImpl : AbstractPresenter<DisclaimerView>(), Discla
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
                     if (response.value == null) {
-                        view?.onUsernameAvailable(username)
+                        view?.onUsernameAvailable()
                         view?.showSearchLayout()
                     } else {
                         view?.onUsernameTaken()
