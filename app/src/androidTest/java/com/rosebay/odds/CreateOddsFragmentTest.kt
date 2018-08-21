@@ -1,5 +1,7 @@
 package com.rosebay.odds
 
+import Resources.espressoDaggerMockRule
+import android.content.Context
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
@@ -16,7 +18,6 @@ import android.widget.DatePicker
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.ui.createOdds.CreateOddsFragment
 import com.rosebay.odds.ui.createOdds.CreateOddsPresenterImpl
-import com.rosebay.odds.ui.createOdds.CreateOddsView
 import com.rosebay.odds.ui.createOdds.ImagePagerAdapter
 import com.rosebay.odds.util.SharedPreferencesClient
 import org.hamcrest.CoreMatchers.allOf
@@ -53,6 +54,9 @@ class CreateOddsFragmentTest {
     private lateinit var testOdd: SingleOdd
 
     @get:Rule
+    val daggerRule = espressoDaggerMockRule()
+
+    @get:Rule
     var testRule = ActivityTestRule(SingleFragmentTestActivity::class.java)
 
     @Before
@@ -61,11 +65,11 @@ class CreateOddsFragmentTest {
         MockitoAnnotations.initMocks(this)
         testOdd = createTestOdd()
         testImageList = createImageStringList()
-        fragment.createOddsPresenter = mockPresenter
         testRule.activity.setFragment(fragment)
+        fragment.onAttach(testRule.activity as Context)
+        fragment.createOddsPresenter = mockPresenter
         `when`(mockPagerAdapter!!.getCurrentUrl(anyInt())).thenReturn("url")
         `when`(mockClient!!.getUsername(anyString())).thenReturn("username")
-        `when`<CreateOddsView>(mockPresenter.view).thenReturn(fragment)
         Espresso.closeSoftKeyboard()
     }
 
@@ -186,6 +190,8 @@ class CreateOddsFragmentTest {
     fun testVoteNo() {
         testRule.runOnUiThread { run { fragment.showForOrAgainstLayout() } }
         onView(withId(R.id.noCheckBox)).check(matches(isDisplayed())).perform(click()).check(matches(isChecked()))
+        onView(withId(R.id.yesCheckBox)).perform(click()).check(matches(isChecked()))
+        onView(withId(R.id.noCheckBox)).check(matches(not(isChecked())))
     }
 
     @Test
@@ -193,6 +199,8 @@ class CreateOddsFragmentTest {
     fun testVoteYes() {
         testRule.runOnUiThread { run { fragment.showForOrAgainstLayout() } }
         onView(withId(R.id.yesCheckBox)).check(matches(isDisplayed())).perform(click()).check(matches(isChecked()))
+        onView(withId(R.id.noCheckBox)).perform(click()).check(matches(isChecked()))
+        onView(withId(R.id.yesCheckBox)).check(matches(not(isChecked())))
     }
 
     @Test

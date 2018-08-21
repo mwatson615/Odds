@@ -15,21 +15,17 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
-
+import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.OnClick
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.R
 import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.ui.CreateSingleOddInterface
-import com.squareup.leakcanary.RefWatcher
-import java.util.Objects
-
-import javax.inject.Inject
-
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import easymvp.annotation.FragmentView
 import easymvp.annotation.Presenter
+import java.util.*
+import javax.inject.Inject
 
 @FragmentView(presenter = MainOddsPresenterImpl::class)
 class MainOddsFragment : Fragment(), MainOddsView, MainOddsAdapter.ClickListener {

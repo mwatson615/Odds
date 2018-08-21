@@ -1,7 +1,6 @@
 package com.rosebay.odds.ui.favoriteOdds
 
 import android.support.annotation.VisibleForTesting
-import android.util.Log
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.localStorage.FavoriteDao
 import com.rosebay.odds.model.Favorite
@@ -12,7 +11,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.exceptions.CompositeException
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 import javax.inject.Inject
 
 open class FavoriteOddsPresenterImpl @Inject constructor() : AbstractPresenter<FavoriteOddsView>(), FavoriteOddsPresenter {
