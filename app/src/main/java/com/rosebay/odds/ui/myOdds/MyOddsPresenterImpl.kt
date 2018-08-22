@@ -1,8 +1,8 @@
 package com.rosebay.odds.ui.myOdds
 
 
-import android.annotation.SuppressLint
 import android.support.annotation.VisibleForTesting
+import android.util.Log
 import com.google.firebase.database.DatabaseReference
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.model.SingleOdd
@@ -22,8 +22,7 @@ open class MyOddsPresenterImpl @Inject constructor() : AbstractPresenter<MyOddsV
 
     @VisibleForTesting
     lateinit var myOddsView: MyOddsView
-
-    @SuppressLint("CheckResult")
+    
     override fun fetchMyOdds(username: String) {
         view?.onLoading()
         val myOdds = ArrayList<SingleOdd>()
@@ -44,8 +43,10 @@ open class MyOddsPresenterImpl @Inject constructor() : AbstractPresenter<MyOddsV
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( { response ->
                     for (snapshot in response) {
+                        Log.i("snapshot in response : ", snapshot.value.toString())
                         myOdds.add(snapshot.getValue(SingleOdd::class.java)!!)
                     }
+                    view?.onResponse(myOdds)
                 }, {
                   e ->
                     if (e is EmptyResponseException) {

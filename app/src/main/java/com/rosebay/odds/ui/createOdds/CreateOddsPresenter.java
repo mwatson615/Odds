@@ -8,6 +8,8 @@ public interface CreateOddsPresenter {
 
     void getImages(String description, String query);
 
+    void addUserVote(SingleOdd singleOdd);
+
     void onViewAttached(CreateOddsView view);
 
 }

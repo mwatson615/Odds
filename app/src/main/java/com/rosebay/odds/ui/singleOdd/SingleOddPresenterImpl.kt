@@ -1,7 +1,6 @@
 package com.rosebay.odds.ui.singleOdd
 
 
-import android.annotation.SuppressLint
 import android.support.annotation.VisibleForTesting
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.localStorage.FavoriteDao
@@ -33,7 +32,6 @@ open class SingleOddPresenterImpl @Inject constructor() : AbstractPresenter<Sing
     @VisibleForTesting
     var singleOddView: SingleOddView? = null
 
-    @SuppressLint("CheckResult")
     override fun addToFavorites(username: String, postId: String) {
         view?.disableFavoritesButton()
         val favorite = Favorite()
@@ -84,7 +82,6 @@ open class SingleOddPresenterImpl @Inject constructor() : AbstractPresenter<Sing
                 }
     }
 
-    @SuppressLint("CheckResult")
     fun addUserVote(postId: String, username: String, votedYes: Boolean?) {
         val vote = Vote()
         vote.postId = postId
