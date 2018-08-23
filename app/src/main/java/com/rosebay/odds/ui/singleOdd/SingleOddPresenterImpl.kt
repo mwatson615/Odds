@@ -3,7 +3,6 @@ package com.rosebay.odds.ui.singleOdd
 
 import android.support.annotation.VisibleForTesting
 import com.rosebay.odds.OddsApplication
-import com.rosebay.odds.R.string.username
 import com.rosebay.odds.localStorage.FavoriteDao
 import com.rosebay.odds.localStorage.VoteDao
 import com.rosebay.odds.model.Favorite
@@ -48,6 +47,8 @@ open class SingleOddPresenterImpl @Inject constructor() : AbstractPresenter<Sing
                     if (it > 0) {
                         view?.onAddedToFavorites()
                         view?.setFavoritesBtn(true)
+                    } else {
+                        view?.onError()
                     }
                     },
                         { view?.onError() })
@@ -60,7 +61,11 @@ open class SingleOddPresenterImpl @Inject constructor() : AbstractPresenter<Sing
                 .subscribe( {
                     if (it > 0) {
                         view?.onRemovedFromFavorites()
-                        view?.setFavoritesBtn(false)}},
+                        view?.setFavoritesBtn(false)
+                    } else {
+                        view?.onError()
+                    }
+                },
                         { view?.onError() })
     }
 

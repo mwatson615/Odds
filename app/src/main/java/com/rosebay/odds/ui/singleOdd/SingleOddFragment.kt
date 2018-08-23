@@ -21,7 +21,6 @@ import com.rosebay.odds.util.Constants
 import com.squareup.picasso.Picasso
 import easymvp.annotation.FragmentView
 import easymvp.annotation.Presenter
-import kotlinx.android.synthetic.main.fragment_single_odd.*
 import javax.inject.Inject
 
 @FragmentView(presenter = SingleOddPresenterImpl::class)

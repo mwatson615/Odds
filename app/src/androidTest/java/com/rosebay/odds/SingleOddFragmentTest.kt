@@ -81,21 +81,6 @@ class SingleOddFragmentTest {
 
     @Test
     @Throws(Throwable::class)
-    fun testDisableFavoritesButton() {
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-        rule.runOnUiThread { run { fragment.disableFavoritesButton() } }
-        onView(withId(R.id.addToFavoritesButton)).check(matches(not(isEnabled())))
-    }
-
-    @Test
-    fun testEnableFavoritesButton() {
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-        rule.runOnUiThread { run { fragment.enableFavoritesButton() } }
-        onView(withId(R.id.addToFavoritesButton)).check(matches(isEnabled()))
-    }
-
-    @Test
-    @Throws(Throwable::class)
     fun testSetPercentage() {
         rule.runOnUiThread { run { fragment.setPercentage(singleOdd.percentage) } }
         onView(withId(R.id.percentageSingleOdd)).check(matches(withText(
@@ -143,6 +128,41 @@ class SingleOddFragmentTest {
     }
 
     @Test
+    fun testOnRemovedFromFavorites() {
+        rule.runOnUiThread { run { fragment.onRemovedFromFavorites() } }
+        onView(allOf<View>(withId(android.support.design.R.id.snackbar_text),
+                withText(R.string.removed_from_favs_msg))).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+    }
+
+    @Test
+    fun testSetFavoritesBtnTrue() {
+        rule.runOnUiThread { run { fragment.setFavoritesBtn(true) } }
+        onView(withId(R.id.addToFavoritesButton)).check(matches(isSelected()))
+    }
+
+    @Test
+    fun testSetFavoritesBtnFalse() {
+        rule.runOnUiThread { run { fragment.setFavoritesBtn(false) } }
+        onView(withId(R.id.addToFavoritesButton)).check(matches(not(isSelected())))
+    }
+
+    @Test
+    @Throws(Throwable::class)
+    fun testAddToFavorites() {
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+        rule.runOnUiThread { run { fragment.setFavoritesBtn(false) } }
+        onView(withId(R.id.addToFavoritesButton)).check(matches(isEnabled())).check(matches(isClickable())).perform(click())
+        verify<SingleOddPresenterImpl>(mockPresenter).addToFavorites(targetContext.resources.getString(R.string.username), singleOdd.postId)
+    }
+
+    @Test
+    fun testRemoveFromFavorites() {
+        rule.runOnUiThread { run { fragment.setFavoritesBtn(true) } }
+        onView(withId(R.id.addToFavoritesButton)).check(matches(isEnabled())).check(matches(isClickable())).perform(click())
+        verify<SingleOddPresenterImpl>(mockPresenter).removeFromFavorites(singleOdd.postId)
+    }
+
+    @Test
     @Throws(Throwable::class)
     fun testOnVoteYes() {
         rule.runOnUiThread { run { fragment.enableVoteButtons() } }
@@ -156,15 +176,6 @@ class SingleOddFragmentTest {
         rule.runOnUiThread { run { fragment.enableVoteButtons() } }
         onView(withId(R.id.voteNoButton)).perform(click())
         verify<SingleOddPresenterImpl>(mockPresenter).voteNo(anyString())
-    }
-
-    @Test
-    @Throws(Throwable::class)
-    fun testAddToFavorites() {
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-        rule.runOnUiThread { run { fragment.enableFavoritesButton() } }
-        onView(withId(R.id.addToFavoritesButton)).check(matches(isEnabled())).check(matches(isClickable())).perform(click())
-        verify<SingleOddPresenterImpl>(mockPresenter).addToFavorites(targetContext.resources.getString(R.string.username), singleOdd.postId)
     }
 
     @Test
