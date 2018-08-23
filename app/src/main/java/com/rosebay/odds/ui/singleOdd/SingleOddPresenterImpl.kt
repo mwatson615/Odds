@@ -3,6 +3,7 @@ package com.rosebay.odds.ui.singleOdd
 
 import android.support.annotation.VisibleForTesting
 import com.rosebay.odds.OddsApplication
+import com.rosebay.odds.R.string.username
 import com.rosebay.odds.localStorage.FavoriteDao
 import com.rosebay.odds.localStorage.VoteDao
 import com.rosebay.odds.model.Favorite
@@ -33,7 +34,6 @@ open class SingleOddPresenterImpl @Inject constructor() : AbstractPresenter<Sing
     var singleOddView: SingleOddView? = null
 
     override fun addToFavorites(username: String, postId: String) {
-        view?.disableFavoritesButton()
         val favorite = Favorite()
         favorite.username = username
         favorite.postId = postId
@@ -42,44 +42,60 @@ open class SingleOddPresenterImpl @Inject constructor() : AbstractPresenter<Sing
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError {
-                    view?.enableFavoritesButton()
                     view?.onError()
                 }
-                .subscribe { view?.onAddedToFavorites() }
+                .subscribe( { it ->
+                    if (it > 0) {
+                        view?.onAddedToFavorites()
+                        view?.setFavoritesBtn(true)
+                    }
+                    },
+                        { view?.onError() })
+    }
+
+    override fun removeFromFavorites(postId: String?) {
+        Observable.fromCallable { favoriteDao.deleteFavorite(postId) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe( {
+                    if (it > 0) {
+                        view?.onRemovedFromFavorites()
+                        view?.setFavoritesBtn(false)}},
+                        { view?.onError() })
     }
 
     override fun voteYes(postId: String) {
         view?.disableVoteButtons()
         val map = HashMap<String, String>()
         map[Constants.POST_ID] = postId
-        val voteYes = cloudFunctionsClient.submitVoteYes(map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response ->
-                    loadNumbersData(response)
-                    addUserVote(response.postId, response.username, true)
-                }
-                ) {
-                    view?.onError()
-                    view?.enableVoteButtons()
-                }
+        cloudFunctionsClient.submitVoteYes(map)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ response ->
+                loadNumbersData(response)
+                addUserVote(response.postId, response.username, true)
+            }
+            ) {
+                view?.onError()
+                view?.enableVoteButtons()
+            }
     }
 
     override fun voteNo(postId: String) {
         view?.disableVoteButtons()
         val map = HashMap<String, String>()
         map[Constants.POST_ID] = postId
-        val voteYes = cloudFunctionsClient.submitNoVote(map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response ->
-                    loadNumbersData(response)
-                    addUserVote(response.postId, response.username, false)
-                }
-                ) {
-                    view?.onError()
-                    view?.enableVoteButtons()
-                }
+        cloudFunctionsClient.submitNoVote(map)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ response ->
+                loadNumbersData(response)
+                addUserVote(response.postId, response.username, false)
+            }
+            ) {
+                view?.onError()
+                view?.enableVoteButtons()
+            }
     }
 
     fun addUserVote(postId: String, username: String, votedYes: Boolean?) {
@@ -99,8 +115,8 @@ open class SingleOddPresenterImpl @Inject constructor() : AbstractPresenter<Sing
         favoriteDao.findFavByPostID(postId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete { view?.enableFavoritesButton() }
-                .doOnSuccess { view?.disableFavoritesButton() }
+                .doOnComplete { view?.setFavoritesBtn(false) }
+                .doOnSuccess { view?.setFavoritesBtn(true) }
                 .doOnError { view?.onError() }
                 .subscribe()
     }
