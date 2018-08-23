@@ -1,16 +1,13 @@
 package com.rosebay.odds;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
 import com.rosebay.odds.model.SingleOdd;
+import com.rosebay.odds.network.CloudFunctionsClient;
 import com.rosebay.odds.network.FirebaseClient;
 import com.rosebay.odds.ui.mainOdds.MainOddsPresenterImpl;
 import com.rosebay.odds.ui.mainOdds.MainOddsView;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,15 +18,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import durdinapps.rxfirebase2.RxFirebaseQuery;
 import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,23 +32,23 @@ import static org.mockito.Mockito.when;
 public class MainOddsPresenterTest {
 
     @Mock
-    RxFirebaseQuery mockQuery;
-    @Mock
-    DataSnapshot mockSnapshot;
-    @Mock
     FirebaseClient mockFirebaseClient;
+    @Mock
+    CloudFunctionsClient mockCloudClient;
     @Mock
     MainOddsView mockView;
     @InjectMocks
     MainOddsPresenterImpl presenter = new MainOddsPresenterImpl();
-    private List<DataSnapshot> testSnapshotList;
+    private List<SingleOdd> testList;
+    private List<SingleOdd> emptyList;
     private SingleOdd testSingleOdd;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         testSingleOdd = createTestSingleOdd();
-        testSnapshotList = createSnapshots();
+        testList = createList();
+        emptyList = new ArrayList<>();
         presenter.setViewInterface(mockView);
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setIoSchedulerHandler(h -> Schedulers.trampoline());
@@ -79,13 +73,25 @@ public class MainOddsPresenterTest {
         verify(mockView).onError();
     }
 
-    @Ignore
     @Test
     public void testFetchSearchResults() {
-        when(mockQuery.filterByRefs(any(DatabaseReference.class), any(Query.class))).thenReturn(mockQuery);
+        when(mockCloudClient.search(anyString())).thenReturn(Single.just(testList));
         presenter.fetchSearchResults("searchTerms");
+        verify(mockView).setData(testList);
+    }
 
-        verify(mockView).setData(anyList());
+    @Test
+    public void testFetchSearchResultsEmpty() {
+        when(mockCloudClient.search(anyString())).thenReturn(Single.just(emptyList));
+        presenter.fetchSearchResults("searchTerms");
+        verify(mockView).onNoSearchResults();
+    }
+
+    @Test(expected = Exception.class)
+    public void testFetchSearchResultsError() {
+        when(mockCloudClient.search(anyString())).thenThrow(new Throwable());
+        presenter.fetchSearchResults("searchTerms");
+        verify(mockView).onError();
     }
 
     @After
@@ -93,9 +99,9 @@ public class MainOddsPresenterTest {
         presenter.onViewDetached();
     }
 
-    public List<DataSnapshot> createSnapshots() {
-        List<DataSnapshot> list = new ArrayList<>();
-        list.add(mockSnapshot);
+    public List<SingleOdd> createList() {
+        List<SingleOdd> list = new ArrayList<>();
+        list.add(createTestSingleOdd());
         return list;
     }
 

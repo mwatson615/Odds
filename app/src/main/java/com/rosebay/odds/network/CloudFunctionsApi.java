@@ -2,11 +2,14 @@ package com.rosebay.odds.network;
 
 import com.rosebay.odds.model.SingleOdd;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Single;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface CloudFunctionsApi {
 
@@ -15,5 +18,8 @@ public interface CloudFunctionsApi {
 
     @POST("downVote")
     Single<SingleOdd> voteNo(@Body Map<String, String> postIdMap);
+
+    @GET("search")
+    Single<List<SingleOdd>> search(@Query("searchTerms") String searchTerms);
 
 }
