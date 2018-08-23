@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity(), CreateSingleOddInterface, OnUsernameSa
     }
 
     override fun getSingleOddsFragment(singleOdd: SingleOdd) {
-        val fragment = SingleOddFragment.newInstance()
+        val fragment = SingleOddFragment()
         val args = Bundle()
         args.putSerializable(Constants.SINGLE_ODD_KEY, singleOdd)
         args.putString(Constants.USERNAME, usernamePreferencesClient.getUsername(resources.getString(R.string.username)))

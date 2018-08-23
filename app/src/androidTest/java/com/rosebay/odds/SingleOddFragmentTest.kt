@@ -16,6 +16,7 @@ import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.ui.singleOdd.SingleOddFragment
 import com.rosebay.odds.ui.singleOdd.SingleOddPresenterImpl
 import com.rosebay.odds.util.Constants
+import junit.framework.Assert.assertEquals
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
@@ -33,11 +34,9 @@ import org.mockito.MockitoAnnotations
 class SingleOddFragmentTest {
 
     @Mock
-    private
     lateinit var mockPresenter: SingleOddPresenterImpl
 
     @InjectMocks
-    private
     lateinit var fragment: SingleOddFragment
     private lateinit var singleOdd: SingleOdd
     private lateinit var targetContext: Context
@@ -67,24 +66,17 @@ class SingleOddFragmentTest {
     @Throws(Throwable::class)
     fun testInitialPresenterCalls() {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+        assertEquals(mockPresenter, fragment.singleOddPresenter)
+        verify<SingleOddPresenterImpl>(mockPresenter).onViewAttached(fragment)
         verify<SingleOddPresenterImpl>(mockPresenter).checkForFavorite(anyString())
         verify<SingleOddPresenterImpl>(mockPresenter).checkIfVoted(anyString())
         verify<SingleOddPresenterImpl>(mockPresenter).loadOddsData(singleOdd)
     }
 
     @Test
-    @Throws(Throwable::class)
-    fun testDisableFavoritesButton() {
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-        rule.runOnUiThread { run { fragment.disableFavoritesButton() } }
-        onView(withId(R.id.addToFavoritesButton)).check(matches(not<View>(isEnabled())))
-    }
-
-    @Test
-    @Throws(Throwable::class)
-    fun testEnableFavoritesButton() {
-        rule.runOnUiThread { run { fragment.enableFavoritesButton() } }
-        onView(withId(R.id.addToFavoritesButton)).check(matches(isEnabled()))
+    fun testOnPause() {
+        run { fragment.onPause() }
+        verify(mockPresenter).onViewDetached()
     }
 
     @Test
@@ -92,7 +84,7 @@ class SingleOddFragmentTest {
     fun testSetPercentage() {
         rule.runOnUiThread { run { fragment.setPercentage(singleOdd.percentage) } }
         onView(withId(R.id.percentageSingleOdd)).check(matches(withText(
-                targetContext!!.resources.getString(R.string.percentage_text, singleOdd.percentage))))
+                targetContext.resources.getString(R.string.percentage_text, singleOdd.percentage))))
     }
 
     @Test
@@ -117,7 +109,7 @@ class SingleOddFragmentTest {
                     singleOdd.dateSubmitted)
         }
         onView(withId(R.id.singleOddCreationTextView)).check(matches(withText(
-                targetContext!!.resources.getString(R.string.created_by_date, singleOdd.username, singleOdd.dateSubmitted))))
+                targetContext.resources.getString(R.string.created_by_date, singleOdd.username, singleOdd.dateSubmitted))))
     }
 
     @Test
@@ -136,10 +128,44 @@ class SingleOddFragmentTest {
     }
 
     @Test
+    fun testOnRemovedFromFavorites() {
+        rule.runOnUiThread { run { fragment.onRemovedFromFavorites() } }
+        onView(allOf<View>(withId(android.support.design.R.id.snackbar_text),
+                withText(R.string.removed_from_favs_msg))).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+    }
+
+    @Test
+    fun testSetFavoritesBtnTrue() {
+        rule.runOnUiThread { run { fragment.setFavoritesBtn(true) } }
+        onView(withId(R.id.addToFavoritesButton)).check(matches(isSelected()))
+    }
+
+    @Test
+    fun testSetFavoritesBtnFalse() {
+        rule.runOnUiThread { run { fragment.setFavoritesBtn(false) } }
+        onView(withId(R.id.addToFavoritesButton)).check(matches(not(isSelected())))
+    }
+
+    @Test
+    @Throws(Throwable::class)
+    fun testAddToFavorites() {
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+        rule.runOnUiThread { run { fragment.setFavoritesBtn(false) } }
+        onView(withId(R.id.addToFavoritesButton)).check(matches(isEnabled())).check(matches(isClickable())).perform(click())
+        verify<SingleOddPresenterImpl>(mockPresenter).addToFavorites(targetContext.resources.getString(R.string.username), singleOdd.postId)
+    }
+
+    @Test
+    fun testRemoveFromFavorites() {
+        rule.runOnUiThread { run { fragment.setFavoritesBtn(true) } }
+        onView(withId(R.id.addToFavoritesButton)).check(matches(isEnabled())).check(matches(isClickable())).perform(click())
+        verify<SingleOddPresenterImpl>(mockPresenter).removeFromFavorites(singleOdd.postId)
+    }
+
+    @Test
     @Throws(Throwable::class)
     fun testOnVoteYes() {
-        onView(withId(R.id.voteYesButton)).check(matches(isEnabled()))
-        onView(withId(R.id.voteNoButton)).check(matches(isEnabled()))
+        rule.runOnUiThread { run { fragment.enableVoteButtons() } }
         onView(withId(R.id.voteYesButton)).perform(click())
         verify<SingleOddPresenterImpl>(mockPresenter).voteYes(anyString())
     }
@@ -147,18 +173,9 @@ class SingleOddFragmentTest {
     @Test
     @Throws(Throwable::class)
     fun testOnNoVote() {
-        onView(withId(R.id.voteYesButton)).check(matches(isEnabled()))
-        onView(withId(R.id.voteNoButton)).check(matches(isEnabled()))
+        rule.runOnUiThread { run { fragment.enableVoteButtons() } }
         onView(withId(R.id.voteNoButton)).perform(click())
         verify<SingleOddPresenterImpl>(mockPresenter).voteNo(anyString())
-    }
-
-    @Test
-    @Throws(Throwable::class)
-    fun testAddToFavorites() {
-        rule.runOnUiThread { run { fragment.enableFavoritesButton() } }
-        onView(withId(R.id.addToFavoritesButton)).check(matches(isEnabled())).check(matches(isClickable())).perform(click())
-        verify<SingleOddPresenterImpl>(mockPresenter).addToFavorites(targetContext.resources.getString(R.string.username), singleOdd.postId)
     }
 
     @Test
@@ -197,6 +214,7 @@ class SingleOddFragmentTest {
 
     @After
     fun tearDown() {
+        run { fragment.onDestroyView()}
         rule.finishActivity()
     }
 
@@ -211,7 +229,7 @@ class SingleOddFragmentTest {
         singleOdd.imageUrl = "https://images.pexels.com/photos/937465/pexels-photo-937465.jpeg?auto=compress&cs=tinysrgb&h=350"
         singleOdd.description = "The Buddha"
         singleOdd.postId = "12345"
-        singleOdd.username = "username"
+        singleOdd.username = "testUsername"
         args.putSerializable(Constants.SINGLE_ODD_KEY, singleOdd)
         args.putString(Constants.USERNAME, "username")
         return args

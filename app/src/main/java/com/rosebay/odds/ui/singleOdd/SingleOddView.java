@@ -23,10 +23,10 @@ public interface SingleOddView {
 
     void enableVoteButtons();
 
-    void disableFavoritesButton();
-
-    void enableFavoritesButton();
-
     void setCreationInfo(String username, String creationDate);
+
+    void onRemovedFromFavorites();
+
+    void setFavoritesBtn(Boolean isFavorite);
 
 }

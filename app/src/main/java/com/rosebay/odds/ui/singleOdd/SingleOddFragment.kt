@@ -54,11 +54,16 @@ class SingleOddFragment : Fragment(), SingleOddView {
     private lateinit var mSingleOdd: SingleOdd
     private lateinit var mUsername : String
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mSingleOdd = arguments?.getSerializable(Constants.SINGLE_ODD_KEY) as SingleOdd
+        mUsername = arguments?.getString(Constants.USERNAME) as String
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_single_odd, container, false)
         ButterKnife.bind(this, root)
-        mSingleOdd = arguments?.getSerializable(Constants.SINGLE_ODD_KEY) as SingleOdd
-        mUsername = arguments?.getString(Constants.USERNAME) as String
+        mAddToFavoritesButton.setOnClickListener { favButtonListener(it) }
         return root
     }
 
@@ -109,6 +114,10 @@ class SingleOddFragment : Fragment(), SingleOddView {
         Snackbar.make(mOddsAgainstTextView, R.string.added_to_favorites_msg, Snackbar.LENGTH_SHORT).show()
     }
 
+    override fun onRemovedFromFavorites() {
+        Snackbar.make(mOddsAgainstTextView, getString(R.string.removed_from_favs_msg), Snackbar.LENGTH_SHORT).show()
+    }
+
     @OnClick(R.id.voteYesButton)
     fun voteYes() {
         singleOddPresenter.voteYes(mSingleOdd.postId)
@@ -119,9 +128,22 @@ class SingleOddFragment : Fragment(), SingleOddView {
         singleOddPresenter.voteNo(mSingleOdd.postId)
     }
 
-    @OnClick(R.id.addToFavoritesButton)
-    fun addToFavorites() {
-        singleOddPresenter.addToFavorites(mUsername, mSingleOdd.postId)
+    fun favButtonListener(view: View) {
+        if (view.isSelected) {
+            singleOddPresenter.removeFromFavorites(mSingleOdd.postId)
+        } else {
+            singleOddPresenter.addToFavorites(mUsername, mSingleOdd.postId)
+        }
+    }
+
+    override fun setFavoritesBtn(isFavorite: Boolean) {
+        if (isFavorite) {
+            mAddToFavoritesButton.isSelected = true
+            DrawableCompat.setTint(mAddToFavoritesButton.drawable, ContextCompat.getColor(context!!, R.color.accent))
+        } else {
+            mAddToFavoritesButton.isSelected = false
+            DrawableCompat.setTint(mAddToFavoritesButton.drawable, ContextCompat.getColor(context!!, R.color.primaryTextColor))
+        }
     }
 
     override fun onVoteSuccess() {
@@ -136,16 +158,6 @@ class SingleOddFragment : Fragment(), SingleOddView {
     override fun enableVoteButtons() {
         mVoteYesButton.isEnabled = true
         mVoteNoButton.isEnabled = true
-    }
-
-    override fun disableFavoritesButton() {
-        mAddToFavoritesButton.isEnabled = false
-        DrawableCompat.setTint(mAddToFavoritesButton.drawable, ContextCompat.getColor(context!!, R.color.accent))
-    }
-
-    override fun enableFavoritesButton() {
-        mAddToFavoritesButton.isEnabled = true
-        DrawableCompat.setTint(mAddToFavoritesButton.drawable, ContextCompat.getColor(context!!, R.color.primaryTextColor))
     }
 
     override fun onError() {
@@ -163,10 +175,4 @@ class SingleOddFragment : Fragment(), SingleOddView {
         refWatcher.watch(this)
     }
 
-    companion object {
-
-        fun newInstance(): SingleOddFragment {
-            return SingleOddFragment()
-        }
-    }
 }

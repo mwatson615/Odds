@@ -82,6 +82,15 @@ public class SingleOddPresenterTest {
         presenter.addToFavorites("username", "postId");
         scheduler.triggerActions();
         verify(mockView).onAddedToFavorites();
+        verify(mockView).setFavoritesBtn(true);
+    }
+
+    @Test
+    public void testAddToFavoritesFail() {
+        when(mockFavoriteDao.createFavorite(any(Favorite.class))).thenReturn(0L);
+        presenter.addToFavorites("username", "postId");
+        scheduler.triggerActions();
+        verify(mockView).onError();
     }
 
     @Test(expected = Throwable.class)
@@ -89,7 +98,31 @@ public class SingleOddPresenterTest {
         when(mockFavoriteDao.createFavorite(any(Favorite.class))).thenThrow(new Throwable());
         presenter.addToFavorites("username", "postId");
         scheduler.triggerActions();
-        verify(mockView).enableFavoritesButton();
+        verify(mockView).onError();
+    }
+
+    @Test
+    public void testRemoveFromFavorites() {
+        when(mockFavoriteDao.deleteFavorite(anyString())).thenReturn(1);
+        presenter.removeFromFavorites("postID");
+        scheduler.triggerActions();
+        verify(mockView).setFavoritesBtn(false);
+        verify(mockView).onRemovedFromFavorites();
+    }
+
+    @Test
+    public void testRemoveFromFavoritesFail() {
+        when(mockFavoriteDao.deleteFavorite(anyString())).thenReturn(0);
+        presenter.removeFromFavorites("postID");
+        scheduler.triggerActions();
+        verify(mockView).onError();
+    }
+
+    @Test(expected = Throwable.class)
+    public void testRemoveFromFavoritesError() {
+        when(mockFavoriteDao.deleteFavorite(anyString())).thenThrow(new Throwable());
+        presenter.removeFromFavorites("postID");
+        scheduler.triggerActions();
         verify(mockView).onError();
     }
 
@@ -154,7 +187,7 @@ public class SingleOddPresenterTest {
         when(mockFavoriteDao.findFavByPostID(anyString())).thenReturn(Maybe.empty());
         presenter.checkForFavorite("postId");
         scheduler.triggerActions();
-        verify(mockView).enableFavoritesButton();
+        verify(mockView).setFavoritesBtn(false);
     }
 
     @Test
@@ -162,7 +195,7 @@ public class SingleOddPresenterTest {
         when(mockFavoriteDao.findFavByPostID(anyString())).thenReturn(Maybe.just("postId"));
         presenter.checkForFavorite("postId");
         scheduler.triggerActions();
-        verify(mockView).disableFavoritesButton();
+        verify(mockView).setFavoritesBtn(true);
     }
 
     @Test(expected = Exception.class)

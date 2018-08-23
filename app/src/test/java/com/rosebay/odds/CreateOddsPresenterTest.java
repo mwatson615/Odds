@@ -1,9 +1,11 @@
 package com.rosebay.odds;
 
 
+import com.rosebay.odds.localStorage.VoteDao;
 import com.rosebay.odds.model.ImageItem;
 import com.rosebay.odds.model.ImageResponse;
 import com.rosebay.odds.model.SingleOdd;
+import com.rosebay.odds.model.Vote;
 import com.rosebay.odds.network.ImageClient;
 import com.rosebay.odds.ui.createOdds.CreateOddsPresenterImpl;
 import com.rosebay.odds.ui.createOdds.CreateOddsView;
@@ -27,6 +29,7 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.schedulers.TestScheduler;
 
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -39,6 +42,8 @@ public class CreateOddsPresenterTest {
     CreateOddsView mockView;
     @Mock
     ImageClient mockImageClient;
+    @Mock
+    VoteDao mockVoteDao;
     @InjectMocks
     CreateOddsPresenterImpl presenter;
     TestScheduler testScheduler;
@@ -79,6 +84,14 @@ public class CreateOddsPresenterTest {
         presenter.getImages("one", "two");
         testScheduler.triggerActions();
         verify(mockView).onError();
+    }
+
+    @Test
+    public void testAddUserVote() {
+        when(mockVoteDao.createVoteEntry(any(Vote.class))).thenReturn(1L);
+        presenter.addUserVote(testSingleOdd);
+        testScheduler.triggerActions();
+        verify(mockVoteDao).createVoteEntry(any(Vote.class));
     }
 
     @After
