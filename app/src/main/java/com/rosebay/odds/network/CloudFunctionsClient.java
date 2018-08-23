@@ -2,6 +2,7 @@ package com.rosebay.odds.network;
 
 import com.rosebay.odds.model.SingleOdd;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Single;
@@ -20,5 +21,9 @@ public class CloudFunctionsClient {
 
     public Single<SingleOdd> submitNoVote(Map<String, String> postIdMap) {
         return mCloudFunctionsApi.voteNo(postIdMap);
+    }
+
+    public Single<List<SingleOdd>> search(String searchTerms) {
+        return mCloudFunctionsApi.search(searchTerms);
     }
 }

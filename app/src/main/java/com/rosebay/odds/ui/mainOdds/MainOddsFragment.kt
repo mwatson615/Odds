@@ -106,7 +106,7 @@ class MainOddsFragment : Fragment(), MainOddsView, MainOddsAdapter.ClickListener
     }
 
     override fun onLoading() {
-        mHomeRecyclerView.visibility = View.GONE
+        mHomeRecyclerView.visibility = View.INVISIBLE
         mProgressBar.visibility = View.VISIBLE
     }
 
@@ -177,6 +177,8 @@ class MainOddsFragment : Fragment(), MainOddsView, MainOddsAdapter.ClickListener
     }
 
     override fun onNoSearchResults() {
+        mProgressBar.visibility = View.INVISIBLE
+        mHomeRecyclerView.visibility = View.VISIBLE
         Snackbar.make(mHomeRecyclerView, R.string.no_search_results_msg, Snackbar.LENGTH_SHORT).show()
     }
 
