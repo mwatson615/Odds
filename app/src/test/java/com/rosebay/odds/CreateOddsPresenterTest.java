@@ -109,6 +109,14 @@ public class CreateOddsPresenterTest {
         return response;
     }
 
+    public Vote createTestVote() {
+        Vote vote = new Vote();
+        vote.setPostId("12345");
+        vote.setUsername("testUser");
+        vote.setVotedYes(false);
+        return vote;
+    }
+
     private SingleOdd createTestSingleOdd() {
         SingleOdd singleOdd = new SingleOdd();
         singleOdd.setPercentage(50);

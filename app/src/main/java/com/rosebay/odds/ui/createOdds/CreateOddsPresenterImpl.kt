@@ -47,7 +47,7 @@ open class CreateOddsPresenterImpl @Inject constructor() : AbstractPresenter<Cre
 
         Observable.fromCallable { voteDao.createVoteEntry(vote) }
                 .map { it ->
-                    if (it != 1L) {
+                    if (it < 1L) {
                         throw DaoNotUpdatedException()
                     } else {
                         it
@@ -57,7 +57,8 @@ open class CreateOddsPresenterImpl @Inject constructor() : AbstractPresenter<Cre
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError { view?.onError() }
                 .retry(2)
-                .subscribe()
+                .subscribe( {} ,
+                        {view?.onError()})
     }
 
     override fun getImages(description: String, queryTerms: String) {
