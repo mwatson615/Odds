@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -24,7 +23,6 @@ import com.rosebay.odds.model.SingleOdd
 import com.rosebay.odds.ui.CreateSingleOddInterface
 import easymvp.annotation.FragmentView
 import easymvp.annotation.Presenter
-import java.util.*
 import javax.inject.Inject
 
 @FragmentView(presenter = MainOddsPresenterImpl::class)
@@ -189,8 +187,6 @@ class MainOddsFragment : Fragment(), MainOddsView, MainOddsAdapter.ClickListener
 
     override fun onDestroy() {
         super.onDestroy()
-        val refWatcher = OddsApplication.getRefWatcher(Objects.requireNonNull<FragmentActivity>(activity))
-        refWatcher.watch(this)
     }
 
     override fun onDestroyView() {

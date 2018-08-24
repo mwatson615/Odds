@@ -133,8 +133,6 @@ open class DisclaimerFragment : Fragment(), DisclaimerView {
     override fun onDestroy() {
         super.onDestroy()
         mCallback = null
-        val refWatcher = OddsApplication.getRefWatcher(activity!!)
-        refWatcher.watch(this)
     }
 
     companion object {
