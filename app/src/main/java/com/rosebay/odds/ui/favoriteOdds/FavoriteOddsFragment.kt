@@ -103,8 +103,6 @@ class FavoriteOddsFragment : Fragment(), FavoriteOddsView {
 
     override fun onDestroy() {
         super.onDestroy()
-        val refWatcher = OddsApplication.getRefWatcher(activity!!)
-        refWatcher.watch(this)
     }
 
     companion object {
