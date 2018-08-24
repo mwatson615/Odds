@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.2.51'
+    ext.kotlin_version = '1.2.61'
     repositories {
         google()
         jcenter()
@@ -9,6 +9,7 @@ buildscript {
         maven { url  "http://dl.bintray.com/6thsolution/easymvp" }
         maven { url 'https://maven.google.com' }
         maven { url "https://jitpack.io" }
+        maven { url "https://plugins.gradle.org/m2/"}
     }
     dependencies {
         classpath 'com.jakewharton:butterknife-gradle-plugin:8.8.1'
