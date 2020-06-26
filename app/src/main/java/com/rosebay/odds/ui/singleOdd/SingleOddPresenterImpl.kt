@@ -1,7 +1,6 @@
 package com.rosebay.odds.ui.singleOdd
 
-
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.localStorage.FavoriteDao
 import com.rosebay.odds.localStorage.VoteDao

@@ -1,7 +1,6 @@
 package com.rosebay.odds.ui.createOdds
 
-
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 import com.google.firebase.database.DatabaseReference
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.localStorage.VoteDao

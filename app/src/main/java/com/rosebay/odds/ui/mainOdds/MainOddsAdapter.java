@@ -2,7 +2,6 @@ package com.rosebay.odds.ui.mainOdds;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -49,7 +49,7 @@ public class MainOddsAdapter extends RecyclerView.Adapter<MainOddsAdapter.OddsVi
         holder.percentageTextView.setText(setPercentage(singleOdd.getPercentage()));
         Uri uri = Uri.parse(singleOdd.getImageUrl());
         mContext = holder.imageView.getContext();
-        Picasso.with(mContext).load(uri).fit().into(holder.imageView);
+        Picasso.get().load(uri).fit().into(holder.imageView);
     }
 
     @Override

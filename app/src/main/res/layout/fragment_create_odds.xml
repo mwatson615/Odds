@@ -34,14 +34,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
 
-        <android.support.v4.view.ViewPager
+        <androidx.core.view.ViewPager
             android:id="@+id/imageViewPager"
             android:background="@drawable/rounded_corners"
             android:layout_width="175dp"
             android:layout_height="175dp"
             android:layout_gravity="center">
 
-        </android.support.v4.view.ViewPager>
+        </androidx.core.view.ViewPager>
 
     </LinearLayout>
 
@@ -69,7 +69,7 @@
 
     </LinearLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.ConstraintLayout
         android:id="@+id/imageSearchTermsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -118,7 +118,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imageSearchTermsEditText"/>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/forOrAgainstLinearLayout"

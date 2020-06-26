@@ -2,8 +2,6 @@ package com.rosebay.odds.ui.favoriteOdds;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +15,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.squareup.picasso.Picasso;
 
 public class FavoriteOddsAdapter extends RecyclerView.Adapter<FavoriteOddsAdapter.FavoriteOddsViewHolder> {
     private List<SingleOdd> mOddsList;
@@ -53,7 +54,7 @@ public class FavoriteOddsAdapter extends RecyclerView.Adapter<FavoriteOddsAdapte
         holder.mPercentageTextView.setText(mContext.getResources().getString(R.string.percentage_text, singleOdd.getPercentage()));
         Uri uri = Uri.parse(singleOdd.getImageUrl());
         mContext = holder.mImageView.getContext();
-        Picasso.with(mContext).load(uri).fit().into(holder.mImageView);
+        Picasso.get().load(uri).fit().into(holder.mImageView);
     }
 
     @Override

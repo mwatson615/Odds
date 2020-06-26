@@ -2,12 +2,6 @@ package com.rosebay.odds.ui.mainOdds
 
 import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.support.v7.widget.AppCompatImageView
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SearchView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +9,14 @@ import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.google.android.material.snackbar.Snackbar
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.R
 import com.rosebay.odds.model.SingleOdd
@@ -38,7 +37,7 @@ class MainOddsFragment : Fragment(), MainOddsView, MainOddsAdapter.ClickListener
     @BindView(R.id.searchButton)
     lateinit var mSearchButton: ImageButton
     @BindView(R.id.searchView)
-    lateinit var mSearchView: android.support.v7.widget.SearchView
+    lateinit var mSearchView: SearchView
     @BindView(R.id.search_close_btn)
     lateinit var mSearchViewBtn: AppCompatImageView
     @BindView(R.id.closeSearchButton)
@@ -70,7 +69,7 @@ class MainOddsFragment : Fragment(), MainOddsView, MainOddsAdapter.ClickListener
         mHomeRecyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         OddsApplication.appComponent.inject(this)
         super.onAttach(context)
         if (context is CreateSingleOddInterface)

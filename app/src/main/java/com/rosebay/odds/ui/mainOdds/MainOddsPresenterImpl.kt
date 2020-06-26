@@ -2,7 +2,7 @@ package com.rosebay.odds.ui.mainOdds
 
 
 import android.annotation.SuppressLint
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 import com.google.firebase.database.DatabaseReference
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.model.SingleOdd

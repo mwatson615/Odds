@@ -3,17 +3,17 @@ package com.rosebay.odds.ui.singleOdd
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.drawable.DrawableCompat
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.fragment.app.Fragment
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.google.android.material.snackbar.Snackbar
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.R
 import com.rosebay.odds.model.SingleOdd
@@ -99,7 +99,7 @@ class SingleOddFragment : Fragment(), SingleOddView {
 
     override fun setImageUrl(imageUrl: String) {
         val uri = Uri.parse(imageUrl)
-        Picasso.with(context).load(uri).fit().into(mImageView)
+        Picasso.get().load(uri).fit().into(mImageView)
     }
 
     override fun setCreationInfo(username: String, creationDate: String) {
