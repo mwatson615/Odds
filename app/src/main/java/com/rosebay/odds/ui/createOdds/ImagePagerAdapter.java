@@ -2,7 +2,6 @@ package com.rosebay.odds.ui.createOdds;
 
 
 import android.content.Context;
-import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,8 @@ import com.rosebay.odds.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import androidx.viewpager.widget.PagerAdapter;
 
 public class ImagePagerAdapter extends PagerAdapter {
 
@@ -53,7 +54,7 @@ public class ImagePagerAdapter extends PagerAdapter {
             rightArrowButton.setVisibility(View.INVISIBLE);
         }
 
-        Picasso.with(mContext).load(mImageList.get(position)).fit().into(imageView);
+        Picasso.get().load(mImageList.get(position)).fit().into(imageView);
         getCurrentUrl(position);
         container.addView(itemView);
         return itemView;

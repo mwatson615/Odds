@@ -83,47 +83,49 @@ android {
 }
 
 dependencies {
+    def lifecycle_version = "2.2.0"
+    def arch_version = "2.1.0"
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     
     implementation 'com.google.android.gms:play-services-analytics:17.0.0'
-    implementation 'com.google.android.gms:play-services-ads:18.1.1'
-    implementation('com.google.apis:google-api-services-customsearch:v1-rev59-1.23.0') {
+    implementation 'com.google.android.gms:play-services-ads:19.2.0'
+    implementation('com.google.apis:google-api-services-customsearch:v1-rev78-1.25.0') {
         exclude module: 'guava-jdk5'
     }
-    implementation 'com.google.firebase:firebase-core:17.0.1'
-    implementation 'com.google.firebase:firebase-database:18.0.1'
-    implementation 'com.google.firebase:firebase-ads:18.1.1'
-    implementation 'com.google.firebase:firebase-firestore:20.2.0'
+    implementation 'com.google.firebase:firebase-core:17.4.3'
+    implementation 'com.google.firebase:firebase-database:19.3.1'
+    implementation 'com.google.firebase:firebase-ads:19.2.0'
+    implementation 'com.google.firebase:firebase-firestore:21.4.3'
     implementation 'com.github.frangsierra:rx2firebase:1.1.3'
 
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'android.arch.lifecycle:common-java8:1.1.1'
-    kapt 'android.arch.lifecycle:compiler:1.1.1'
+    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     kapt 'android.arch.persistence.room:compiler:1.1.1'
     implementation 'android.arch.persistence.room:rxjava2:1.1.1'
 
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    kapt 'com.jakewharton:butterknife-compiler:10.1.0'
+    kapt 'com.jakewharton:butterknife:10.2.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.2'
+    kapt 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
-    implementation 'com.jakewharton.timber:timber:4.6.1'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.1'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
 
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.14'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    kapt 'com.google.dagger:dagger-compiler:2.15'
-    implementation 'com.google.dagger:dagger:2.15'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.18'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    kapt 'com.google.dagger:dagger-compiler:2.26'
+    implementation 'com.google.dagger:dagger:2.26'
 
     implementation 'com.android.support:multidex:1.0.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.27.0-eap13'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.4'
 
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -136,14 +138,16 @@ dependencies {
     }
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
-    androidTestImplementation 'org.mockito:mockito-android:2.20.1'
+    androidTestImplementation 'org.mockito:mockito-android:3.3.0'
     androidTestImplementation 'android.arch.core:core-testing:1.1.1'
     androidTestUtil 'com.android.support.test:orchestrator:1.0.1'
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.20.1'
-    androidTestImplementation 'org.mockito:mockito-android:2.20.1'
-    testImplementation 'org.mockito:mockito-inline:2.20.1'
-    androidTestCompile 'com.github.fabioCollini.daggermock:daggermock-kotlin:0.8.4'
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.mockito:mockito-core:3.3.0'
+    androidTestImplementation 'org.mockito:mockito-android:3.3.0'
+    testImplementation 'org.mockito:mockito-inline:3.3.0'
+    androidTestImplementation 'com.github.fabioCollini.daggermock:daggermock-kotlin:0.8.4'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.android.support:design:28.0.0'
 }
 
 def coverageSourceDirs = ['../app/src/main/java']
@@ -172,11 +176,11 @@ def classDirs = fileTree(dir: '../app/build/intermediates/classes/debug/com',
 task jacocoCombinedDebugCoverageReport(type: JacocoReport, dependsOn: ['connectedDebugAndroidTest', 'testDebugUnitTest']) {
     group = "Reporting"
     description = "Combined Jacoco coverage report for debug build"
-    classDirectories = classDirs
-    additionalSourceDirs = files(coverageSourceDirs)
-    sourceDirectories = files(coverageSourceDirs)
-    executionData = files([fileTree(dir: 'build/outputs/code-coverage/connected', include: '**/*.ec'),
-                           fileTree(dir: 'build/jacoco', include: '**/*.exec')])
+    getClassDirectories().from(classDirs)
+    getAdditionalClassDirs().from(files(coverageSourceDirs))
+    getSourceDirectories().from(files(coverageSourceDirs))
+    getExecutionData().from(files([fileTree(dir: 'build/outputs/code-coverage/connected', include: '**/*.ec'),
+                           fileTree(dir: 'build/jacoco', include: '**/*.exec')]))
     onlyIf = {
         true
     }

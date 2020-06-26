@@ -1,10 +1,10 @@
 package com.rosebay.odds.localStorage;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.RoomDatabase;
-
 import com.rosebay.odds.model.Favorite;
 import com.rosebay.odds.model.Vote;
+
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
 
 @Database(entities = {Favorite.class, Vote.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
