@@ -2,9 +2,6 @@ package com.rosebay.odds.ui.disclaimer
 
 import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import androidx.core.app.Fragment
-import android.support.v7.widget.SearchView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +9,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.google.android.material.snackbar.Snackbar
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.R
 import com.rosebay.odds.ui.OnUsernameSavedInterface
@@ -36,7 +36,7 @@ open class DisclaimerFragment : Fragment(), DisclaimerView {
     @BindView(R.id.disclaimerTextView)
     lateinit var mDisclaimerTextView: TextView
     @BindView(R.id.disclaimerSearchView)
-    lateinit var mSearchView: android.support.v7.widget.SearchView
+    lateinit var mSearchView: SearchView
     @BindView(R.id.usernameSearchProgressBar)
     lateinit var mSearchProgressBar: ProgressBar
     @BindView(R.id.saveUsernameButton)
@@ -52,7 +52,7 @@ open class DisclaimerFragment : Fragment(), DisclaimerView {
         return root
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         OddsApplication.appComponent.inject(this)
         super.onAttach(context)
         if (context is OnUsernameSavedInterface)

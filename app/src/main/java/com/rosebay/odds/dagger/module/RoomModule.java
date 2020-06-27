@@ -1,6 +1,5 @@
 package com.rosebay.odds.dagger.module;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import com.rosebay.odds.dagger.component.OddsApplicationScope;
@@ -8,6 +7,7 @@ import com.rosebay.odds.localStorage.AppDatabase;
 import com.rosebay.odds.localStorage.FavoriteDao;
 import com.rosebay.odds.localStorage.VoteDao;
 
+import androidx.room.Room;
 import dagger.Module;
 import dagger.Provides;
 

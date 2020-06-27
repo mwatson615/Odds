@@ -2,18 +2,18 @@ package com.rosebay.odds.ui.favoriteOdds
 
 import android.content.Context
 import android.os.Bundle
-import androidx.constraintlayout.ConstraintLayout
-import android.support.design.widget.Snackbar
-import androidx.core.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.google.android.material.snackbar.Snackbar
 import com.rosebay.odds.OddsApplication
 import com.rosebay.odds.R
 import com.rosebay.odds.model.SingleOdd
@@ -56,7 +56,7 @@ class FavoriteOddsFragment : Fragment(), FavoriteOddsView {
         mFavoritesRecyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         OddsApplication.appComponent.inject(this)
         super.onAttach(context)
     }
